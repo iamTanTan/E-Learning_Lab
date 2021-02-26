@@ -43,7 +43,7 @@ Admin panel demo: https://www.youtube.com/embed/PvA5yy0Z74E
 The following tools were used in this project:
 
 - [Python](https://www.python.org)
-- [Django] (https://www.djangoproject.com/)
+- [Django](https://www.djangoproject.com/)
 - [HTML/CSS]
 
 ## :white_check_mark: Requirements ##
@@ -56,10 +56,10 @@ Download an IDE, preferably VS code. Load project into the IDE
 
 ```bash
 # Clone this project
-$ git clone https://github.com/adriane0523/VirtualLearningLab.git
+$ git clone https://github.com/iamTanTan/E-Learning_Lab_Spring_2021.git
 
 # Access
-$ cd virtuallearnignlab
+$ cd virtuallearninglab
 
 # create a virutal enviroment to install your dependencies,
 $ python -m venv venv
@@ -68,10 +68,10 @@ $ python -m venv venv
 $ venv/Scripts/activate
 
 #install dependencies
-$ pip install -m requirments.txt
+$ pip install -r requirements.txt
 
 #run the app
-$  Python manage.py runserver
+$ python manage.py runserver
 
 #helpful commands:
 #updating static/assets folder
@@ -126,7 +126,7 @@ https://pypi.org/project/django-tinymce/
 ## :memo: License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
-Created by: Phillippe Adriane Inocencio
+Created by: Phillippe Adriane Inocencio & ASU EPICS
 &#xa0;
 
 <a href="#top">Back to top</a>
