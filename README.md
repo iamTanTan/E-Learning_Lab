@@ -59,7 +59,7 @@ Download an IDE, preferably VS code. Load project into the IDE
 $ git clone https://github.com/iamTanTan/E-Learning_Lab_Spring_2021.git
 
 # Access
-$ cd virtuallearninglab
+$ cd E-Learning_Lab_Spring_2021/
 
 # create a virutal enviroment to install your dependencies,
 $ python -m venv venv
