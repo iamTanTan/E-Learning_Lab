@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from Components.student.models import Post, WelcomePage,ReadingMaterial, Connect, Quiz
+from Components.student.models import Post, WelcomePage,ReadingMaterial, Connect
 from django.contrib.auth.decorators import login_required
-
+from Components.quizapp.models import Quiz
 @login_required
 def class_index(request, id_field):
     posts = Post.objects.all().filter(courses = (str)(id_field) )

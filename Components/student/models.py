@@ -54,18 +54,3 @@ class Connect(models.Model):
     class Meta: 
         # Add verbose name 
         verbose_name = 'Connect Page'
-
-
-class Quiz(models.Model):
-    def __str__(self):
-        return 'Connect: ' + self.title
-
-    title = models.CharField(max_length=255, default ="")
-    content = RichTextUploadingField(blank=True)
-    courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
-    description = models.TextField(blank=True)
-
-    class Meta: 
-        # Add verbose name 
-        verbose_name = 'Quiz Page'
-    

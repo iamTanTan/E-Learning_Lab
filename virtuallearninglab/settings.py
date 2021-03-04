@@ -23,7 +23,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,  "static")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
 
-with open('secret_key.txt') as f:
+with open('../secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Components.admin_panel',
     'ckeditor',
     'ckeditor_uploader',
+    'Components.quizapp',
 ]
 
 MIDDLEWARE = [
@@ -151,8 +152,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 
-with open('email.txt') as f:
+with open('../email.txt') as f:
     EMAIL_HOST_USER = f.read().strip()
 
-with open('password.txt') as f:
+with open('../password.txt') as f:
     EMAIL_HOST_PASSWORD = f.read().strip()
