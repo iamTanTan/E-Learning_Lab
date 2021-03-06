@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'Components.courses',
     'tinymce',
     'Components.home',
+    'Components.discussion_board',
     'Components.admin_panel',
     'ckeditor',
     'ckeditor_uploader',
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'virtuallearninglab.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['virtuallearninglab/templates/', 'student/templates', 'zoom/templates', 'courses/templates', os.path.join(BASE_DIR, 'templates')],
+        'DIRS': ['virtuallearninglab/templates/', 'student/templates', 'zoom/templates', 'courses/templates', 'disscussion_board/templates', os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
