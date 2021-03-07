@@ -2,14 +2,32 @@ from .models import Discussion
 from .forms import CommentForm
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
 
-class DiscussionList(ListView):
-    queryset = Discussion.objects.order_by('-created_on')
-    template_name = 'discussion_index.html'
+@login_required
+def discussions(request, id_field):
+    discussions = Discussion.objects.all().filter(courses = (str)(id_field) )
+    # detail = discussions.get()
+  
+    if (not discussions.exists()):
+        return render(request, "not_exists.html", {})
 
+    context = {
+        "discussions": discussions,
+     
+    }
+
+    return render(request, "discussions.html", context)
+
+
+@login_required
 def discussion_detail(request, slug):
-    template_name = 'discussion_detail.html'
     discussion = get_object_or_404(Discussion, slug=slug)
+
+    if (not discussion.exists()):
+        return render(request, "not_exists.html", {})
+
+
     comments = discussion.comments
     new_comment = None
     # Comment posted
@@ -26,7 +44,9 @@ def discussion_detail(request, slug):
     else:
         comment_form = CommentForm()
 
-    return render(request, template_name, {'post': discussion,
+    return render(request, 'discussion_detail.html', {'post': discussion,
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
+
+
