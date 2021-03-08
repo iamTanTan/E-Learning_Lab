@@ -1,8 +1,9 @@
 from .models import Discussion
 from .forms import CommentForm
 from django.shortcuts import render, get_object_or_404
-from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
+from django.views import generic
+
 
 @login_required
 def discussions(request, id_field):
@@ -21,14 +22,16 @@ def discussions(request, id_field):
 
 
 @login_required
-def discussion_detail(request, slug):
-    discussion = get_object_or_404(Discussion, slug=slug)
+def discussion_detail(request, id_field, pk):
+    discussions = Discussion.objects.all().filter(courses = (str)(id_field) )
+    
 
-    if (not discussion.exists()):
+    if (not discussions.exists()):
         return render(request, "not_exists.html", {})
 
+    discussion = discussions.get(pk=pk)
 
-    comments = discussion.comments
+    comments = discussion.comments.all()
     new_comment = None
     # Comment posted
     if request.method == 'POST':
@@ -44,9 +47,7 @@ def discussion_detail(request, slug):
     else:
         comment_form = CommentForm()
 
-    return render(request, 'discussion_detail.html', {'post': discussion,
+    return render(request, 'discussion_detail.html', {'discussion': discussion,
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
-
-

@@ -1,52 +1,120 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base2.html' %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 card mb-4  mt-3 left  top">
-            <div class="card-body">
-                <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
-                <p class=" text-muted">{{ discussion.author }} | {{ discussion.created_on }}</p>
-                <p class="card-text ">{{ discussion.content | safe }}</p>
-            </div>
-        </div>
+{% block page_content %}
 
-        <div class="col-md-8 card mb-4  mt-3 ">
-            <div class="card-body">
-                <!-- comments -->
-                <h2>{{ comments.count }} comments</h2>
-
-
-                {% for comment in comments %}
-                <div class="comments" style="padding: 10px;">
-                    <p class="font-weight-bold">
-                        {{ comment.author }}
-                        <span class=" text-muted font-weight-normal">
-                            {{ comment.created_on }}
-                        </span>
-                    </p>
-                    {{ comment.content | linebreaks }}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Form to create new comment -->
-        <div class="col-md-8 card mb-4  mt-3 ">
-            <div class="card-body">
-                {% if new_comment %}
-                <div class="alert alert-success" role="alert">
-                    Your comment is now added
-                </div>
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="{% url 'home'%}">
+                    E-Learning Lab
+                </a>
+            </li>
+            <small>
+                {% if user.is_authenticated %}
+                <li style="color: white;">Welcome, {{ user.get_username }}</li>
+                <li style="padding-left:1rem; padding-bottom: 2em;"><a
+                        href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
                 {% else %}
-                <h3>Leave a comment</h3>
-                <form method="post" style="margin-top: 1.3em;">
-                    {{ comment_form.as_p }}
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-                </form>
+                <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
                 {% endif %}
+            </small>
+            <h4 style="color:white; padding-left: 1rem;">Course Links:</h4>
+            <li>
+                <a href="{% url 'welcome_page' discussion.courses.id %}">Home</a>
+            </li>
+            <li>
+                <a href="{% url 'class_index' discussion.courses.id %}">Modules</a>
+            </li>
+            <li>
+                <a href="{% url 'connect' discussion.courses.id %}">Connect</a>
+            </li>
+            <li>
+                <a href="{% url 'reading_material' discussion.courses.id %}">Reading Material</a>
+            </li>
+            <li>
+                <a href="{% url 'quiz' discussion.courses.id %}">Assessments</a>
+            </li>
+            <li>
+                <a href="{% url 'discussions' discussion.courses.id %}">Discussion Boards</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Discussion Topic Display -->
+    <div class="container align-content-*-center">
+        <div class="row">
+            <div class="col-md-8 card mb-4  mt-3 top mx-auto shadow">
+                <div class="card-body">
+                    <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
+                    <p class=" text-muted">{{ discussion.created_by }} | {{ discussion.created_on }}</p>
+                    <p class="card-text ">{{ discussion.content | safe }}</p>
+                </div>
+            </div>
+
+            <!-- Comments Display -->
+            <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
+                <div class="card-body">
+                    <!-- comments -->
+                    <h2>{{ comments.count }} Comments</h2>
+
+                    {% for comment in comments %}
+                    <hr>
+                    <div class="comments" style="padding: 10px;">
+                        <p class="font-weight-bold">
+                            {{ comment.created_by }}
+                            <span class=" text-muted font-weight-normal">
+                                {{ comment.created_on }}
+                            </span>
+                            
+                        </p>
+                        {{ comment.content | linebreaks }}
+                        
+                        <!-- ToDo Create a view to add replies and hook the url to href below -->
+                        <a href="#" class="float-*-right btn btn-sm btn-dark">Reply</a>
+                       
+
+                        <!-- Display Replies -->
+                        {% for reply in comment.replies.all %}
+                        <div class="col-md-8 card mb-4 mt-3 shadow">
+                            <div class="card-body">
+                                <p class="font-weight-bold">
+                                    {{ reply.created_by }}
+                                    <span class=" text-muted font-weight-normal">
+                                        {{ reply.created_on }}
+                                    </span>
+                                    <p>{{ reply.reply | linebreaks }}</p>
+                                    
+                            </div>
+                            </li>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Form to create new comment -->
+                <!-- <div class="col-md card mb-3 mt-3 mx-auto shadow"> -->
+                    <!-- <div class="card-body"> -->
+                        {% if new_comment %}
+                        <div class="alert alert-success" role="alert">
+                            Your comment has been added
+                        </div>
+                        {% else %}
+                        <hr>
+                        <h3>Leave a comment</h3>
+                        <form method="post" style="margin-top: 1.3em;">
+                            {{ comment_form.as_p }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark btn-md">Submit</button>
+                        </form>
+                        {% endif %}
+                    <!-- </div>
+                </div> -->
             </div>
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock page_content %}
