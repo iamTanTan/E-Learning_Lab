@@ -7,8 +7,6 @@ import uuid, datetime
 # sets User to the currently active user model
 User = get_user_model()
 
-
-
 # Defines the model for a Discussion
 class Discussion(models.Model):
     courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
@@ -55,7 +53,7 @@ class Comment(models.Model):
 
 # Defines the Manager for the Comment Model
 class CommentManager(models.Manager):
-    def create_comment(self, parent_discussion, user):
+    def create_comment(self, parent_discussion, created_by):
         new_comment = self.model(parent_discussion=parent_discussion, created_by=user)
         new_comment.save()
         return new_comment
@@ -89,7 +87,7 @@ class Reply(models.Model):
 
 # Defines the Manager for the Reply Model
 class ReplyManager(models.Manager):
-    def create_reply(self, reply, user):
-        new_reply = self.model(reply=reply, created_by=user)
+    def create_reply(self, Comment, user):
+        new_reply = self.model(comment=comment, created_by=user)
         new_reply.save()
         return new_reply

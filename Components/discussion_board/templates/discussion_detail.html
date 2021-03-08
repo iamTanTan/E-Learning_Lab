@@ -41,78 +41,145 @@
             </li>
         </ul>
     </div>
-    <!-- /#sidebar-wrapper -->
+    <!-- END Sidebar -->
 
     <!-- Discussion Topic Display -->
-    <div class="container align-content-*-center">
-        <div class="row">
-            <div class="col-md-8 card mb-4  mt-3 top mx-auto shadow">
-                <div class="card-body">
-                    <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
-                    <p class=" text-muted">{{ discussion.created_by }} | {{ discussion.created_on }}</p>
-                    <p class="card-text ">{{ discussion.content | safe }}</p>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 card mb-4  mt-3 top mx-auto shadow">
+                    <div class="card-body">
+                        <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
+                        <p class=" text-muted">{{ discussion.created_by }} | {{ discussion.created_on }}</p>
+                        <p class="card-text ">{{ discussion.content | safe }}</p>
+                    </div>
                 </div>
-            </div>
+                <!-- END Discussion Topic Display -->
 
-            <!-- Comments Display -->
-            <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
-                <div class="card-body">
-                    <!-- comments -->
-                    <h2>{{ comments.count }} Comments</h2>
+                <!-- Comments Display -->
+                <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
+                    <div class="card-body">
+                        <!-- comments -->
+                        <h2>{{ comments.count }} Comments</h2>
 
-                    {% for comment in comments %}
-                    <hr>
-                    <div class="comments" style="padding: 10px;">
-                        <p class="font-weight-bold">
-                            {{ comment.created_by }}
-                            <span class=" text-muted font-weight-normal">
-                                {{ comment.created_on }}
-                            </span>
-                            
-                        </p>
-                        {{ comment.content | linebreaks }}
-                        
-                        <!-- ToDo Create a view to add replies and hook the url to href below -->
-                        <a href="#" class="float-*-right btn btn-sm btn-dark">Reply</a>
-                       
+                        <!-- Button trigger modal (pop-up) for CommentForm -->
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                            data-target="#commentModal">
+                            + New Comment
+                        </button>
 
-                        <!-- Display Replies -->
-                        {% for reply in comment.replies.all %}
-                        <div class="col-md-8 card mb-4 mt-3 shadow">
+                        {% for comment in comments %}
+                        <hr>
+                        <div class="comments" style="padding: 10px;">
+                            <p class="font-weight-bold">
+                                {{ comment.created_by }}
+                                <span class=" text-muted font-weight-normal">
+                                    {{ comment.created_on }}
+                                </span>
+                            </p>
+                            {{ comment.content | linebreaks }}
+
+
+                            <!-- Button trigger modal (pop-up) for ReplyForm -->
+                            <button type="button" class="float-*-right btn btn-sm btn-dark" data-toggle="modal"
+                                data-target="#exampleModalCentered">
+                                Reply
+                            </button>
+
+                            <!-- ReplyForm Modal -->
+                            <div class="modal" id="exampleModalCentered" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenteredLabel">Reply to Comment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        {% if new_reply %}
+                                        <div class="alert alert-success" role="alert">
+                                            Your reply has been added
+                                        </div>
+                                        {% else %}
+                                        <form method="post" style="margin-top: 1.3em;">
+                                            <div class="modal-body">
+                                                <table class="table-md-responsive ">
+                                                    {{ reply_form.as_table }}
+                                                </table>
+                                                {% csrf_token %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-dark btn-md">Save changes</button>
+                                            </div>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END ReplyForm modal -->
+
+
+                            <!-- Display Replies for each comment -->
+                            {% for reply in comment.replies.all %}
+
                             <div class="card-body">
                                 <p class="font-weight-bold">
                                     {{ reply.created_by }}
                                     <span class=" text-muted font-weight-normal">
                                         {{ reply.created_on }}
                                     </span>
-                                    <p>{{ reply.reply | linebreaks }}</p>
-                                    
+                                </p>
+                                <p>{{ reply.reply | linebreaks }}</p>
                             </div>
-                            </li>
                             {% endfor %}
+                            <!-- END Display Replies -->
                         </div>
                         {% endfor %}
+                        
                     </div>
-                </div>
 
-                <!-- Form to create new comment -->
-                <!-- <div class="col-md card mb-3 mt-3 mx-auto shadow"> -->
-                    <!-- <div class="card-body"> -->
-                        {% if new_comment %}
-                        <div class="alert alert-success" role="alert">
-                            Your comment has been added
+                    <!-- CommentForm Modal -->
+                    <!-- Button trigger modal (pop-up) for CommentForm -->
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#commentModal">
+                        + New Comment
+                    </button>
+                    <br>
+
+                    <!-- CommentForm Modal -->
+                    <div class="modal" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="commentModalLabel">Create Comment</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% if new_comment %}
+                                <div class="alert alert-success" role="alert">
+                                    Your comment has been added
+                                </div>
+                                {% else %}
+                                <form method="post" style="margin-top: 1.3em;">
+                                    <div class="modal-body">
+                                        <table class="table-md-responsive ">
+                                            {{ comment_form.as_table }}
+                                        </table>
+                                        {% csrf_token %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-dark btn-md">Save comment</button>
+                                    </div>
+                                </form>
+                                {% endif %}
+                            </div>
                         </div>
-                        {% else %}
-                        <hr>
-                        <h3>Leave a comment</h3>
-                        <form method="post" style="margin-top: 1.3em;">
-                            {{ comment_form.as_p }}
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-dark btn-md">Submit</button>
-                        </form>
-                        {% endif %}
-                    <!-- </div>
-                </div> -->
+                    </div>
+                    <!-- END CommentForm modal -->
+                </div>
+                <!-- END Comments Display -->
             </div>
         </div>
     </div>
