@@ -12,9 +12,8 @@ class Discussion(models.Model):
     courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
     title = models.CharField(max_length=200, unique=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authors")
-    slug = models.SlugField(max_length=200, unique=True)
     content = models.CharField(max_length=1000)
-    
+
     updated_on = models.DateTimeField(auto_now_add=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -37,9 +36,11 @@ class Comment(models.Model):
     content = models.TextField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
+    up_vote_count = models.IntegerField(default=0)
+    is_removed = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["created_on"]
+        ordering = ["-created_on", "-up_vote_count"]
 
     # Defines the save functionality
     def save(self):
@@ -67,7 +68,9 @@ class Reply(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
-    
+    up_vote_count = models.IntegerField(default=0)
+    is_removed = models.BooleanField(default=False)
+
     # Defines the save functionality
     def save(self):
         if not self.id:
@@ -76,18 +79,15 @@ class Reply(models.Model):
         super(Reply, self).save()
 
     class Meta:
-        ordering = ["created_on"]
+        ordering = ["-up_vote_count"]
 
     def __str__(self):
         return "Reply {} by {}".format(self.reply, self.created_by)
 
-    @property
-    def get_replies(self):
-        return self.replies.all()
 
 # Defines the Manager for the Reply Model
 class ReplyManager(models.Manager):
-    def create_reply(self, Comment, user):
-        new_reply = self.model(comment=comment, created_by=user)
+    def create_reply(self, comment_id, user):
+        new_reply = self.model(comment=comment_id, created_by=user)
         new_reply.save()
         return new_reply

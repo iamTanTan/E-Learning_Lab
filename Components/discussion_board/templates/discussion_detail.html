@@ -3,6 +3,7 @@
 {% block page_content %}
 
 <div id="wrapper">
+
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
@@ -43,145 +44,181 @@
     </div>
     <!-- END Sidebar -->
 
-    <!-- Discussion Topic Display -->
     <div id="page-content-wrapper">
+
+        <!-- Notification Section -->
+        {% if new_reply %}
+        <div class="alert alert-success" role="alert">
+            Your reply has been added
+        </div>
+        {% endif %}
+        {% if new_comment %}
+        <div class="alert alert-success" role="alert">
+            Your comment has been added
+        </div>
+        {% endif %}
+        <!-- END Notification Section -->
+
+        <!-- Discussion Topic Header -->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8 card mb-4  mt-3 top mx-auto shadow">
-                    <div class="card-body">
-                        <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
-                        <p class=" text-muted">{{ discussion.created_by }} | {{ discussion.created_on }}</p>
-                        <p class="card-text ">{{ discussion.content | safe }}</p>
-                    </div>
-                </div>
-                <!-- END Discussion Topic Display -->
+                <div class="col-lg-12">
+                    <!-- Toggle Menu Button -->
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
 
-                <!-- Comments Display -->
-                <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
-                    <div class="card-body">
-                        <!-- comments -->
-                        <h2>{{ comments.count }} Comments</h2>
-
-                        <!-- Button trigger modal (pop-up) for CommentForm -->
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                            data-target="#commentModal">
-                            + New Comment
-                        </button>
-
-                        {% for comment in comments %}
-                        <hr>
-                        <div class="comments" style="padding: 10px;">
-                            <p class="font-weight-bold">
-                                {{ comment.created_by }}
-                                <span class=" text-muted font-weight-normal">
-                                    {{ comment.created_on }}
-                                </span>
-                            </p>
-                            {{ comment.content | linebreaks }}
-
-
-                            <!-- Button trigger modal (pop-up) for ReplyForm -->
-                            <button type="button" class="float-*-right btn btn-sm btn-dark" data-toggle="modal"
-                                data-target="#exampleModalCentered">
-                                Reply
-                            </button>
-
-                            <!-- ReplyForm Modal -->
-                            <div class="modal" id="exampleModalCentered" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalCenteredLabel">Reply to Comment</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        {% if new_reply %}
-                                        <div class="alert alert-success" role="alert">
-                                            Your reply has been added
-                                        </div>
-                                        {% else %}
-                                        <form method="post" style="margin-top: 1.3em;">
-                                            <div class="modal-body">
-                                                <table class="table-md-responsive ">
-                                                    {{ reply_form.as_table }}
-                                                </table>
-                                                {% csrf_token %}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-dark btn-md">Save changes</button>
-                                            </div>
-                                        </form>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END ReplyForm modal -->
-
-
-                            <!-- Display Replies for each comment -->
-                            {% for reply in comment.replies.all %}
-
-                            <div class="card-body">
-                                <p class="font-weight-bold">
-                                    {{ reply.created_by }}
-                                    <span class=" text-muted font-weight-normal">
-                                        {{ reply.created_on }}
-                                    </span>
-                                </p>
-                                <p>{{ reply.reply | linebreaks }}</p>
-                            </div>
-                            {% endfor %}
-                            <!-- END Display Replies -->
-                        </div>
-                        {% endfor %}
-                        
-                    </div>
-
-                    <!-- CommentForm Modal -->
-                    <!-- Button trigger modal (pop-up) for CommentForm -->
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#commentModal">
-                        + New Comment
-                    </button>
-                    <br>
-
-                    <!-- CommentForm Modal -->
-                    <div class="modal" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="commentModalLabel">Create Comment</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                {% if new_comment %}
-                                <div class="alert alert-success" role="alert">
-                                    Your comment has been added
-                                </div>
-                                {% else %}
-                                <form method="post" style="margin-top: 1.3em;">
-                                    <div class="modal-body">
-                                        <table class="table-md-responsive ">
-                                            {{ comment_form.as_table }}
-                                        </table>
-                                        {% csrf_token %}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-dark btn-md">Save comment</button>
-                                    </div>
-                                </form>
-                                {% endif %}
-                            </div>
+                    <div class="col-md-8 card mb-4 mt-3 top mx-auto shadow">
+                        <div class="card-body">
+                            <h1>{% block title %} {{ discussion.title }} {% endblock title %}</h1>
+                            <p class=" text-muted">{{ discussion.created_by }} | {{ discussion.created_on }}</p>
+                            <p class="card-text ">{{ discussion.content | safe }}</p>
                         </div>
                     </div>
-                    <!-- END CommentForm modal -->
                 </div>
-                <!-- END Comments Display -->
             </div>
         </div>
+        <!-- END Discussion Topic Display -->
+
+        <!-- Comments Display -->
+        <div class="col-lg-12">
+            <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
+                <div class="card-body">
+                    <!-- comments -->
+                    <h2>{{ comments.count }} Comments</h2>
+
+                    <!-- Button trigger modal (pop-up) for CommentForm -->
+                    <!-- Note must pass in variable data as data-whatever value -->
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                        data-target="#commentModal">
+                        + New Comment
+                    </button>
+
+                    {% for comment in comments %}
+                    <hr>
+                    <div class="comments" style="padding: 10px;">
+                        <p class="font-weight-bold">
+                            {{ comment.created_by }}
+                            <span class=" text-muted font-weight-normal">
+                                {{ comment.created_on }}
+                            </span>
+                        </p>
+                        {{ comment.content | linebreaks }}
+
+
+                        <!-- Button trigger modal (pop-up) for ReplyForm -->
+                        <button type="button" class="float-*-right btn btn-sm btn-dark" id="reply-button" data-comment_id='{{comment.id}}' data-toggle="modal"
+                            data-target="#reply-modal">
+                            Reply
+                        </button>
+
+                        <!-- ReplyForm Modal -->
+                        <div class="modal" id="reply-modal" tabindex="-1" role="dialog"
+                            aria-labelledby="reply-modal-label" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reply to
+                                            Comment</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                        
+                                    <form method="post" style="margin-top: 1.3em;">
+                                        <div class="modal-body">
+                                            <table class="table-md-responsive ">
+                                                {{ reply_form.as_table }}
+                                            </table>
+                                            {% csrf_token %}
+                                        </div>
+                                        <!-- Hidden input for parent comment.id (note this is dynamically changed with jQuery) -->
+                                        <h2  class=".title-thing"></h2>
+                                        <input type="hidden" name="parent_id" id="parent_id" value="">
+                                        <div class="modal-footer">
+                                            <input type="submit" class="btn btn-dark btn-md">
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END ReplyForm modal -->
+
+
+                        <!-- Display Replies for each comment -->
+                        {% for reply in comment.replies.all  %}
+                        {% if reply.comment.id == comment.id %}
+
+                        <div class="card-body">
+                            <p class="font-weight-bold">
+                                {{ reply.created_by }}
+                                <span class=" text-muted font-weight-normal">
+                                    {{ reply.created_on }}
+                                </span>
+                            </p>
+                            <p>{{ reply.reply | linebreaks }}</p>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <!-- END Display Replies -->
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- CommentForm Modal -->
+                <!-- Button trigger modal (pop-up) for CommentForm -->
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#commentModal">
+                    + New Comment
+                </button>
+                <br>
+
+                <!-- CommentForm Modal -->
+                <div class="modal" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="commentModalLabel">Create Comment</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% if new_comment %}
+                            <div class="alert alert-success" role="alert">
+                                Your comment has been added
+                            </div>
+                            {% else %}
+                            <form method="post" class="reply-form" style="margin-top: 1.3em;">
+                                <div class="modal-body">
+                                    <table class="table-md-responsive ">
+                                        {{ comment_form.as_table }}
+                                    </table>
+                                    {% csrf_token %}
+                                </div>
+                                <div></div>
+                               
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-dark btn-md">Save
+                                        comment</button>
+                                </div>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- END CommentForm modal -->
+            </div>
+        </div>
+        <!-- END Comments Display -->
+
     </div>
 </div>
+<!-- Toggle Menu Feature -->
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
 {% endblock page_content %}

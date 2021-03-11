@@ -16,3 +16,9 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ('reply',)
+
+
+class DeleteCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('is_removed',)

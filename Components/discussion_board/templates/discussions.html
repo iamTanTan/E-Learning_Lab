@@ -42,41 +42,54 @@
     </div>
     <!-- END sidebar-wrapper -->
 
+    <div id="page-content-wrapper">
+        <!-- Discussion Page Header -->
 
-    <!-- Discussion Page Header -->
-    <div id="page-content-wrapper container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="col-md-8 offset-md-2">
-                    <h1>{{ discussions.courses }} Discussions</h1>
-                    <hr>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END Discussion Page Header -->
-
-    <!-- Discussion Entries Column -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                {% for discussion in discussions %}
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ discussion.title }}</h2>
-                        <p class="card-text text-muted h6">{{ discussion.created_by }} |
-                            {{ discussion.created_on}} </p>
-                        <p class="card-text">{{discussion.content|slice:":200" }}</p>
-                        <a href="{% url 'discussion_detail' discussions.0.courses.id discussions.0.pk %}"
-                            class="btn btn-dark">View Discussion
-                            &rarr;</a>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-12 ">
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        <div class="col-md-8 offset-md-2">
+                            <h1>{{ discussions.courses }} Discussions</h1>
+                            <hr>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
-    </div>
-    <!-- END Discussion Entries Column -->
 
+        <!-- END Discussion Page Header -->
+
+        <!-- Discussion Entries Column -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    {% for discussion in discussions %}
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ discussion.title }}</h2>
+                            <p class="card-text text-muted h6">{{ discussion.created_by }} |
+                                {{ discussion.created_on}} </p>
+                            <p class="card-text">{{discussion.content|slice:":200" }}</p>
+                            <!-- URL takes in the course ID and specific discussion pk -->
+                            <a href="{% url 'discussion_detail' discussions.0.courses.id discussion.pk %}"
+                                class="btn btn-dark">View Discussion
+                                &rarr;</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- END Discussion Entries Column -->
+    </div>
 </div>
+<!-- Toggle Menu Feature -->
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
 {%endblock%}
