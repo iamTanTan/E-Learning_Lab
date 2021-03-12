@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'Components.admin_panel',
     'ckeditor',
     'ckeditor_uploader',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Select Style for Crispy-Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

@@ -1,5 +1,7 @@
 {% extends 'base2.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block page_content %}
 
 <div id="wrapper">
@@ -95,6 +97,14 @@
                     {% for comment in comments %}
                     <hr>
                     <div class="comments" style="padding: 10px;">
+                        <!-- If removed, don't render information -->
+                        {% if comment.is_removed %}
+                        <p class="font-weight-bold">
+                            comment deleted
+                        </p>
+                        deleted
+                        <!-- Otherwise render all comment information -->
+                        {% else %}
                         <p class="font-weight-bold">
                             {{ comment.created_by }}
                             <span class=" text-muted font-weight-normal">
@@ -102,46 +112,36 @@
                             </span>
                         </p>
                         {{ comment.content | linebreaks }}
+                        {% endif %}
 
+                        <div>
+                            <!-- Button trigger for ReplyForm -->
+                            <span>
+                                <button type="button" class="float-*-right btn btn-sm btn-dark">
+                                    Reply
+                                </button>
 
-                        <!-- Button trigger modal (pop-up) for ReplyForm -->
-                        <button type="button" class="float-*-right btn btn-sm btn-dark" id="reply-button" data-comment_id='{{comment.id}}' data-toggle="modal"
-                            data-target="#reply-modal">
-                            Reply
-                        </button>
-
-                        <!-- ReplyForm Modal -->
-                        <div class="modal" id="reply-modal" tabindex="-1" role="dialog"
-                            aria-labelledby="reply-modal-label" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Reply to
-                                            Comment</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                        
-                                    <form method="post" style="margin-top: 1.3em;">
-                                        <div class="modal-body">
-                                            <table class="table-md-responsive ">
-                                                {{ reply_form.as_table }}
-                                            </table>
-                                            {% csrf_token %}
-                                        </div>
-                                        <!-- Hidden input for parent comment.id (note this is dynamically changed with jQuery) -->
-                                        <h2  class=".title-thing"></h2>
-                                        <input type="hidden" name="parent_id" id="parent_id" value="">
-                                        <div class="modal-footer">
-                                            <input type="submit" class="btn btn-dark btn-md">
-                                        </div>
-                                    </form>
-                                    
-                                </div>
-                            </div>
+                                {% if comment.created_by == user and comment.is_removed == False %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ delete_comment_form|crispy }}
+                                    <input type="hidden" name="comment_id" id="comment_id" value='{{comment.id}}'>
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                                {% endif %}
+                            </span>
                         </div>
-                        <!-- END ReplyForm modal -->
+
+
+                        <form method="post" style="margin-top: 1.3em;">
+                            {% csrf_token %}
+                            {{  reply_form|crispy  }}
+                            <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
+                            <button type="submit" class="btn btn-sm btn-dark">Submit</button>
+                        </form>
+
+
+                        <!-- END ReplyForm  -->
 
 
                         <!-- Display Replies for each comment -->
@@ -189,15 +189,13 @@
                                 Your comment has been added
                             </div>
                             {% else %}
-                            <form method="post" class="reply-form" style="margin-top: 1.3em;">
+                            <form method="post" style="margin-top: 1.3em;">
                                 <div class="modal-body">
-                                    <table class="table-md-responsive ">
-                                        {{ comment_form.as_table }}
-                                    </table>
                                     {% csrf_token %}
+                                    {{ comment_form|crispy }}
                                 </div>
                                 <div></div>
-                               
+
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-dark btn-md">Save
                                         comment</button>

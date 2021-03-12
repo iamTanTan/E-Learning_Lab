@@ -11,14 +11,27 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('content',)
 
+    content = forms.CharField(
+        label="Comment",
+        widget=forms.Textarea(attrs={'placeholder': 'Write a comment here'})
+    )
+
 
 class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ('reply',)
 
+    reply = forms.CharField(
+        label="Reply",
+        widget=forms.Textarea()
+    )
 
 class DeleteCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('is_removed',)
+        fields = ('is_removed', 'id')
+
+    widgets = {'id': forms.HiddenInput()}
+
+    
