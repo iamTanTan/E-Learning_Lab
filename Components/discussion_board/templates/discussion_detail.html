@@ -122,10 +122,8 @@
                                 </button>
 
                                 {% if comment.created_by == user and comment.is_removed == False %}
-                                <form method="post">
+                                <form method="post" action="{% url 'delete_own_comment' comment.pk %}">
                                     {% csrf_token %}
-                                    {{ delete_comment_form|crispy }}
-                                    <input type="hidden" name="comment_id" id="comment_id" value='{{comment.id}}'>
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                                 {% endif %}
@@ -139,8 +137,6 @@
                             <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
                             <button type="submit" class="btn btn-sm btn-dark">Submit</button>
                         </form>
-
-
                         <!-- END ReplyForm  -->
 
 
@@ -157,6 +153,12 @@
                             </p>
                             <p>{{ reply.reply | linebreaks }}</p>
                         </div>
+                        {% if reply.created_by == user %}
+                        <form method="post" action="{% url 'delete_own_reply' reply.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        {% endif %}
                         {% endif %}
                         {% endfor %}
                         <!-- END Display Replies -->

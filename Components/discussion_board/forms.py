@@ -27,11 +27,7 @@ class ReplyForm(forms.ModelForm):
         widget=forms.Textarea()
     )
 
-class DeleteCommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('is_removed', 'id')
 
-    widgets = {'id': forms.HiddenInput()}
+
 
     

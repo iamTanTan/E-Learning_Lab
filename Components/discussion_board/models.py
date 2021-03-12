@@ -23,9 +23,9 @@ class Discussion(models.Model):
     def __str__(self):
         return self.title
 
+    # returns the url to the particual discussions 'discussion_detail.html' 
     def get_absolute_url(self):
-
-        return reverse("discussions", kwargs={'id': self.id}) # new
+        return reverse("discussion_detail", kwargs={'id_field': self.courses.id, 'pk': self.id}) #
 
 
 
