@@ -16,7 +16,6 @@ class CommentForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'placeholder': 'Write a comment here'})
     )
 
-
 class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply

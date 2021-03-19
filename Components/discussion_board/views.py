@@ -117,4 +117,17 @@ def delete_own_reply(request, pk):
 
     return redirect(Discussion.get_absolute_url(discussion))
            
-    
+@login_required
+def update_comment(request, pk):
+    # get particular comment instance
+    comment = Comment.objects.get(pk=pk)
+    discussion = comment.parent_discussion  
+
+    # pass the object as instance in form
+    comment_form = CommentForm(request.POST or None, instance = comment)
+
+    # save the updated data from the form
+    if comment_form.is_valid(): 
+        comment_form.save() 
+
+    return redirect(Discussion.get_absolute_url(discussion))
