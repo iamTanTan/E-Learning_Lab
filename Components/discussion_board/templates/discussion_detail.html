@@ -112,10 +112,11 @@
                             </span>
                             <!-- Update Comment Form -->
                             {% if comment.created_by == user %}
-                            <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseUpdateForm" aria-expanded="false" aria-controls="collapseExample">
+                            <button class="btn btn-light" type="button" data-toggle="collapse"
+                                data-target="#collapseUpdateForm" aria-expanded="false" aria-controls="collapseExample">
                                 Edit Comment
                             </button>
-                            
+
                             <div class="collapse" id="collapseUpdateForm">
                                 <form method="post" action="{% url 'update_comment' comment.pk %}">
                                     {% csrf_token %}
@@ -123,7 +124,7 @@
                                     <button type="submit" class="btn btn-sm btn-light">Save Changes</button>
                                 </form>
                             </div>
-                            
+
                             {% endif %}
                             <!-- END Update Comment Form -->
                         </p>
@@ -131,29 +132,38 @@
                         {% endif %}
 
                         <div class="mt-2">
+                            <!-- Button trigger for ReplyForm -->
                             <div class="d-sm-inline-block mr-2">
-                                <!-- Button trigger for ReplyForm -->
-                                <button type="button" class="float-*-right btn btn-sm btn-dark">Reply</button>
+                                <button class="btn btn-sm btn-dark" type="button" data-toggle="collapse"
+                                    data-target="#collapseReplyForm{{comment.id}}" aria-expanded="false"
+                                    aria-controls="collapseReplyExample">
+                                    Reply
+                                </button>
                             </div>
+                            <!-- END Button trigger for ReplyForm -->
+
                             <!-- Delete Comment Form -->
                             <div class="d-sm-inline-block">
                                 {% if comment.created_by == user and comment.is_removed == False %}
                                 <form method="post" action="{% url 'delete_own_comment' comment.pk %}">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>    
+                                </form>
                                 {% endif %}
-                            <!-- END Delete Comment Form -->
+                                <!-- END Delete Comment Form -->
                             </div>
                         </div>
 
+                        <!-- ReplyForm -->
+                        <div class="collapse" id="collapseReplyForm{{comment.id}}">
 
-                        <form method="post" style="margin-top: 1.3em;">
-                            {% csrf_token %}
-                            {{  reply_form|crispy  }}
-                            <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
-                            <button type="submit" class="btn btn-sm btn-dark">Submit</button>
-                        </form>
+                            <form method="post" style="margin-top: 1.3em;">
+                                {% csrf_token %}
+                                {{  reply_form|crispy  }}
+                                <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
+                                <button type="submit" class="btn btn-sm btn-dark">Submit</button>
+                            </form>
+                        </div>
                         <!-- END ReplyForm  -->
 
 

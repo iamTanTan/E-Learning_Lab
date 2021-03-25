@@ -117,6 +117,8 @@ def delete_own_reply(request, pk):
 
     return redirect(Discussion.get_absolute_url(discussion))
            
+
+           
 @login_required
 def update_comment(request, pk):
     # get particular comment instance
