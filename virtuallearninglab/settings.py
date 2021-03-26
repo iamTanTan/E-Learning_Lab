@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'crispy_forms',
+    'profanity',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +150,7 @@ CKEDITOR_CONFIGS = {
         'width':1500,
     },
 }
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
