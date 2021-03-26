@@ -8,5 +8,5 @@ urlpatterns = [
     path("reading_material/<id_field>", views.reading_material, name="reading_material"),
     path("connect/<id_field>", views.connect, name="connect"),
     path("quizzes/<id_field>", views.quizzes, name="quiz"),
-    path("quizzes/<id_field>/<int:pk>", views.quizzes_index, name="quiz_index"),
+    path("quizzes/<id_field>/<int:id>", views.quizzes_index, name="quiz_index"),
 ]

@@ -76,6 +76,7 @@ def connect(request, id_field):
 @login_required
 def quizzes(request, id_field):
     posts = Quiz.objects.all().filter(courses = (str)(id_field) )
+    #detail = posts.get(id="1df92740-5fb8-46c8-9f7c-25c56d5d34f1")
     if (not posts.exists()):
         return render(request, "not_exists.html", {})
    
@@ -87,9 +88,9 @@ def quizzes(request, id_field):
 
 
 @login_required
-def quizzes_index(request, id_field, pk):
-    posts = Quiz.objects.all().filter(courses = (str)(id_field) )
-    detail = posts.get(pk=pk)
+def quizzes_index(request, id_field, id):
+    posts = Quiz.objects.all().filter(courses = (str)(id_field))
+    detail = posts.get(id=id)
   
     if (not posts.exists()):
         return render(request, "not_exists.html", {})
