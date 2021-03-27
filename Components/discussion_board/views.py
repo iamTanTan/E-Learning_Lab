@@ -2,6 +2,7 @@ from .models import Discussion, Comment, Reply
 from .forms import CommentForm, ReplyForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 import datetime
 
 #  View for the 'discussions.html' which displays a list of discussions for a given course id
@@ -30,7 +31,16 @@ def discussion_detail(request, id_field, pk):
     discussion = discussions.get(pk=pk)
 
     # Retrieve all comments associated with the discussion
-    comments = discussion.comments.all()
+    all_comments = discussion.comments.all()
+
+    paginator = Paginator(all_comments, 20)
+    page = request.GET.get('page', '1')
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
 
     # New Comment POST Form
     new_comment = None
@@ -60,18 +70,18 @@ def discussion_detail(request, id_field, pk):
         if reply_form.is_valid():
 
             # Get the parent id from the comment that will be replied to
-            if(comments.exists()):
-                parent_id = request.POST.get('parent_id')
-                parent_comment = Comment.objects.get(id=parent_id)
-                # Create Reply object but don't save to database yet
-                new_reply = reply_form.save(commit=False)
-                # Assign the current user and current comment to new reply
-                new_reply.comment = parent_comment
-                new_reply.created_by = request.user
-                # Save the reply to the database
-                new_reply.save()
-                # Set form to default state after submit
-                reply_form = ReplyForm()
+            
+            parent_id = request.POST.get('parent_id')
+            parent_comment = Comment.objects.get(id=parent_id)
+            # Create Reply object but don't save to database yet
+            new_reply = reply_form.save(commit=False)
+            # Assign the current user and current comment to new reply
+            new_reply.comment = parent_comment
+            new_reply.created_by = request.user
+            # Save the reply to the database
+            new_reply.save()
+            # Set form to default state after submit
+            reply_form = ReplyForm()
 
     else:
         reply_form = ReplyForm()
