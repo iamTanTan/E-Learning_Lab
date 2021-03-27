@@ -48,7 +48,7 @@
 
     <div id="page-content-wrapper">
 
-        <!-- Notification Section -->
+        <!-- Notification Section on successful creation -->
         {% if new_reply %}
         <div class="alert alert-success" role="alert">
             Your reply has been added
@@ -80,7 +80,7 @@
         </div>
         <!-- END Discussion Topic Display -->
 
-        <!-- Comments Display -->
+        <!-- Comments with Replies Display -->
         <div class="col-lg-12">
             <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
                 <div class="card-body">
@@ -105,29 +105,40 @@
                         deleted
                         <!-- Otherwise render all comment information -->
                         {% else %}
-                        <p class="font-weight-bold">
+                        <div class="font-weight-bold">
                             {{ comment.created_by }}
                             <span class=" text-muted font-weight-normal">
                                 {{ comment.created_on }}
                             </span>
                             <!-- Update Comment Form -->
                             {% if comment.created_by == user %}
-                            <button class="btn btn-light" type="button" data-toggle="collapse"
-                                data-target="#collapseUpdateForm" aria-expanded="false" aria-controls="collapseExample">
-                                Edit Comment
-                            </button>
+                            <div class="d-inline-flex float-sm-right">
+                                <button class="btn btn-sm btn-light" type="button" data-toggle="collapse"
+                                    data-target="#collapseUpdateForm" aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    Edit Comment
+                                </button>
 
+                                <!-- Delete Comment Form -->
+                                {% if comment.created_by == user and comment.is_removed == False %}
+                                <form method="post" action="{% url 'delete_own_comment' comment.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                                {% endif %}
+                                <!-- END Delete Comment Form -->
+                            </div>
                             <div class="collapse" id="collapseUpdateForm">
                                 <form method="post" action="{% url 'update_comment' comment.pk %}">
                                     {% csrf_token %}
-                                    {{  comment_form|crispy  }}
+                                    {{ comment_form|crispy }}
                                     <button type="submit" class="btn btn-sm btn-light">Save Changes</button>
                                 </form>
                             </div>
 
                             {% endif %}
                             <!-- END Update Comment Form -->
-                        </p>
+                        </div>
                         {{ comment.content | linebreaks }}
                         {% endif %}
 
@@ -141,17 +152,6 @@
                                 </button>
                             </div>
                             <!-- END Button trigger for ReplyForm -->
-
-                            <!-- Delete Comment Form -->
-                            <div class="d-sm-inline-block">
-                                {% if comment.created_by == user and comment.is_removed == False %}
-                                <form method="post" action="{% url 'delete_own_comment' comment.pk %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                                {% endif %}
-                                <!-- END Delete Comment Form -->
-                            </div>
                         </div>
 
                         <!-- ReplyForm -->
@@ -159,7 +159,7 @@
 
                             <form method="post" style="margin-top: 1.3em;">
                                 {% csrf_token %}
-                                {{  reply_form|crispy  }}
+                                {{ reply_form|crispy }}
                                 <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
                                 <button type="submit" class="btn btn-sm btn-dark">Submit</button>
                             </form>
@@ -168,32 +168,61 @@
 
 
                         <!-- Display Replies for each comment -->
-                        {% for reply in comment.replies.all  %}
-                        {% if reply.comment.id == comment.id %}
+                        <div>
+                            {% for reply in comment.replies.all %}
+                            {% if reply.comment.id == comment.id %}
 
-                        <div class="card-body">
-                            <p class="font-weight-bold">
-                                {{ reply.created_by }}
-                                <span class=" text-muted font-weight-normal">
-                                    {{ reply.created_on }}
-                                </span>
-                            </p>
-                            <p>{{ reply.reply | linebreaks }}</p>
+                            <div class="card-body">
+                                <div class="font-weight-bold">
+                                    {{ reply.created_by }}
+                                    <span class=" text-muted font-weight-normal">
+                                        {{ reply.created_on }}
+                                    </span>
+
+                                    <!-- Edit Reply Button Trigger for form -->
+                                    <div class="d-inline-flex float-sm-right">
+                                        <button class="btn btn-sm btn-light" type="button" data-toggle="collapse"
+                                            data-target="#collapseUpdateReplyForm" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                            Edit Reply
+                                        </button>
+                                        <!--  END Reply Button Trigger for form -->
+
+                                        <!-- Delete Reply Form -->
+                                        <form method="post" action="{% url 'delete_own_reply' reply.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                    <!--  END Delete Reply Form -->
+
+                                </div>
+                                <p>{{ reply.reply | linebreaks }}</p>
+                            </div>
+
+                            {% if reply.created_by == user %}
+
+                            <!-- Update Reply Form -->
+                            <div class="collapse" id="collapseUpdateReplyForm">
+                                <form method="post" action="{% url 'update_reply' reply.pk %}">
+                                    {% csrf_token %}
+                                    {{ reply_form|crispy }}
+                                    <button type="submit" class="btn btn-sm btn-light">Save Changes</button>
+                                </form>
+                            </div>
+                            <!-- END Update Reply Form -->
+
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            <!-- END Display Replies -->
                         </div>
-                        {% if reply.created_by == user %}
-                        <form method="post" action="{% url 'delete_own_reply' reply.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                        {% endif %}
-                        {% endif %}
-                        {% endfor %}
-                        <!-- END Display Replies -->
                     </div>
 
                     {% endfor %}
 
                 </div>
+
 
                 <!-- CommentForm Modal -->
                 <!-- Button trigger modal (pop-up) for CommentForm -->

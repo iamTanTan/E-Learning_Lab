@@ -28,7 +28,6 @@ class Discussion(models.Model):
         return reverse("discussion_detail", kwargs={'id_field': self.courses.id, 'pk': self.id}) #
 
 
-
 # Defines the model for a Comment which is the child of a Discussion
 class Comment(models.Model):
     parent_discussion = models.ForeignKey('Discussion', on_delete=models.CASCADE, to_field='id', related_name="comments")
@@ -51,14 +50,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return "Comment {} by {}".format(self.content, self.created_by)
-
-# Defines the Manager for the Comment Model
-class CommentManager(models.Manager):
-    def create_comment(self, parent_discussion, created_by):
-        new_comment = self.model(parent_discussion=parent_discussion, created_by=user)
-        new_comment.save()
-        return new_comment
-
 
 
 # Defines the model for a Reply which is the child of a Comment
@@ -83,11 +74,3 @@ class Reply(models.Model):
 
     def __str__(self):
         return "Reply {} by {}".format(self.reply, self.created_by)
-
-
-# Defines the Manager for the Reply Model
-class ReplyManager(models.Manager):
-    def create_reply(self, comment_id, user):
-        new_reply = self.model(comment=comment_id, created_by=user)
-        new_reply.save()
-        return new_reply

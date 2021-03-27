@@ -1,4 +1,4 @@
-from .models import Discussion, Comment, Reply, ReplyManager
+from .models import Discussion, Comment, Reply
 from .forms import CommentForm, ReplyForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -131,5 +131,24 @@ def update_comment(request, pk):
     # save the updated data from the form
     if comment_form.is_valid(): 
         comment_form.save() 
+
+    return redirect(Discussion.get_absolute_url(discussion))
+
+
+@login_required
+def update_reply(request, pk):
+    # get particular reply instance
+    reply = Reply.objects.get(pk=pk)
+
+    # get the parent discussion in order to redirect after
+    comment = reply.comment
+    discussion = comment.parent_discussion 
+
+    # pass the object as instance in form
+    reply_form = ReplyForm(request.POST or None, instance = reply)
+
+    # save the updated data from the form
+    if reply_form.is_valid(): 
+        reply_form.save() 
 
     return redirect(Discussion.get_absolute_url(discussion))

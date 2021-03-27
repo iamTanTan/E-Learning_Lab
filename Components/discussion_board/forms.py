@@ -1,4 +1,4 @@
-from .models import Comment, CommentManager, Reply, ReplyManager
+from .models import Comment, Reply
 from django import forms
 
 # class DiscussionForm(forms.ModelForm):
