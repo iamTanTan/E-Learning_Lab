@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from Components.courses.models import Courses
 from django.urls import reverse
 import uuid, datetime
+from profanity.validators import validate_is_profane
 
 # sets User to the currently active user model
 User = get_user_model()
@@ -12,7 +13,7 @@ class Discussion(models.Model):
     courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
     title = models.CharField(max_length=200, unique=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authors")
-    content = models.CharField(max_length=1000)
+    content = models.CharField(max_length=1000, validators=[validate_is_profane])
 
     updated_on = models.DateTimeField(auto_now_add=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -32,7 +33,7 @@ class Discussion(models.Model):
 class Comment(models.Model):
     parent_discussion = models.ForeignKey('Discussion', on_delete=models.CASCADE, to_field='id', related_name="comments")
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length=1000)
+    content = models.TextField(max_length=1000, validators=[validate_is_profane])
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
     up_vote_count = models.IntegerField(default=0)
@@ -55,7 +56,7 @@ class Comment(models.Model):
 # Defines the model for a Reply which is the child of a Comment
 class Reply(models.Model):
     comment = models.ForeignKey('Comment', related_name='replies',  on_delete=models.CASCADE)
-    reply = models.TextField(max_length=1000)
+    reply = models.TextField(max_length=1000, validators=[validate_is_profane])
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
