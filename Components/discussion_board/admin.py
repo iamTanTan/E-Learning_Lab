@@ -22,7 +22,7 @@ class DiscussionAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('parent_discussion', 'created_by', 'content', 'created_on')
+    list_display = ('parent_discussion', 'created_by', 'content', 'created_on', 'num_vote_up')
     list_filter = ['created_on']
     fieldsets = (
         ("Parent Discussion", {

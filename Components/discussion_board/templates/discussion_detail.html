@@ -85,7 +85,7 @@
             <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
                 <div class="card-body">
                     <!-- comments -->
-                    <h2>{{ comments.count }} Comments</h2>
+                    <h2>Comments</h2>
 
                     <!-- Button trigger modal (pop-up) for CommentForm -->
                     <!-- Note must pass in variable data as data-whatever value -->
@@ -93,6 +93,14 @@
                         data-target="#commentModal">
                         + New Comment
                     </button>
+
+                    <!-- Sort Buttons -->
+                    <span class="d-inline-block float-sm-right">
+                        Sort By:
+                        <a class="btn btn-sm btn-light " href="?order=newest">Newest</a>
+                        <a class="btn btn-sm btn-light" href="?order=best">Most Liked</a>
+                    </span>
+                    <!-- END Sort Buttons -->
 
                     {% for comment in comments %}
                     <hr>
@@ -110,7 +118,10 @@
                             <span class=" text-muted font-weight-normal">
                                 {{ comment.created_on }}
                             </span>
-                            <!-- Update Comment Form -->
+
+
+
+                            <!-- Update / Delete Comment Forms -->
                             {% if comment.created_by == user %}
                             <div class="d-inline-flex float-sm-right">
                                 <button class="btn btn-sm btn-light" type="button" data-toggle="collapse"
@@ -128,6 +139,8 @@
                                 {% endif %}
                                 <!-- END Delete Comment Form -->
                             </div>
+
+                            <!--  Update Comment Form -->
                             <div class="collapse" id="collapseUpdateForm">
                                 <form method="post" action="{% url 'update_comment' comment.pk %}">
                                     {% csrf_token %}
@@ -135,37 +148,57 @@
                                     <button type="submit" class="btn btn-sm btn-light">Save Changes</button>
                                 </form>
                             </div>
+                            <!-- END Update Comment From -->
 
                             {% endif %}
-                            <!-- END Update Comment Form -->
+                            <!-- END Update / Delete Comment Forms -->
                         </div>
-                        {{ comment.content | linebreaks }}
+
+                        <div class="mt-3 mb-2">
+                            {{ comment.content | linebreaks }}
+                        </div>
+
                         {% endif %}
 
                         <div class="mt-2">
-                            <!-- Button trigger for ReplyForm -->
-                            <div class="d-sm-inline-block mr-2">
-                                <button class="btn btn-sm btn-dark" type="button" data-toggle="collapse"
-                                    data-target="#collapseReplyForm{{comment.id}}" aria-expanded="false"
+                            <div class="row align-items-sm-center p-1">
+                                <!-- Button trigger for ReplyForm -->
+                                <button class="col-sm-0 btn btn-sm btn-dark" type="button" data-toggle="collapse"
+                                    data-target=".collapseReplyForm{{comment.id}}" aria-expanded="false"
                                     aria-controls="collapseReplyExample">
                                     Reply
                                 </button>
+                                <!-- END Button trigger for ReplyForm -->
+
+                                <!-- Upvote Buttons for comments -->
+                                <div class="col">
+                                    <div class="btn float-sm-right upvoteComment{{comment.id}}">
+                                        {{ comment.votes.count }}
+                                    </div>
+
+                                    <form class="upvote float-sm-right" data-unique-comment-id="{{comment.id}}"
+                                        method=" post" action="." data-url="{% url 'upvote_comment' comment.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn text-muted btn-link">Like</button>
+                                    </form>
+                                </div>
+                                <!-- END Upvote Buttons for comments -->
                             </div>
-                            <!-- END Button trigger for ReplyForm -->
+
+
+                            <!-- ReplyForm -->
+                            <div class="collapse collapseReplyForm{{comment.id}}">
+                                <form method="post" style="margin-top: 1.3em;">
+                                    {% csrf_token %}
+                                    {{ reply_form|crispy }}
+                                    <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
+                                    <button type="submit" class="btn btn-sm btn-dark">Submit</button>
+                                </form>
+                            </div>
+                            <!-- END ReplyForm  -->
+
+
                         </div>
-
-                        <!-- ReplyForm -->
-                        <div class="collapse" id="collapseReplyForm{{comment.id}}">
-
-                            <form method="post" style="margin-top: 1.3em;">
-                                {% csrf_token %}
-                                {{ reply_form|crispy }}
-                                <input type="hidden" id="parent_id" name="parent_id" value="{{ comment.id }}" />
-                                <button type="submit" class="btn btn-sm btn-dark">Submit</button>
-                            </form>
-                        </div>
-                        <!-- END ReplyForm  -->
-
 
                         <!-- Display Replies for each comment -->
                         <div>
@@ -182,7 +215,7 @@
                                     <!-- Edit Reply Button Trigger for form -->
                                     <div class="d-inline-flex float-sm-right">
                                         <button class="btn btn-sm btn-light" type="button" data-toggle="collapse"
-                                            data-target="#collapseUpdateReplyForm" aria-expanded="false"
+                                            data-target=".collapseUpdateReplyForm{{ comment.id }}" aria-expanded="false"
                                             aria-controls="collapseExample">
                                             Edit Reply
                                         </button>
@@ -203,7 +236,7 @@
                             {% if reply.created_by == user %}
 
                             <!-- Update Reply Form -->
-                            <div class="collapse" id="collapseUpdateReplyForm">
+                            <div class="collapse collapseUpdateReplyForm{{ comment.id }}">
                                 <form method="post" action="{% url 'update_reply' reply.pk %}">
                                     {% csrf_token %}
                                     {{ reply_form|crispy }}
@@ -242,24 +275,19 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            {% if new_comment %}
-                            <div class="alert alert-success" role="alert">
-                                Your comment has been added
-                            </div>
-                            {% else %}
+
                             <form method="post" style="margin-top: 1.3em;">
                                 <div class="modal-body">
                                     {% csrf_token %}
                                     {{ comment_form|crispy }}
                                 </div>
-                                <div></div>
 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-dark btn-md">Save
                                         comment</button>
                                 </div>
                             </form>
-                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -274,7 +302,8 @@
     {% if comments.has_other_pages %}
     <ul class="pagination pagination-lg justify-content-center">
         {% if comments.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ comments.previous_page_number }}">&laquo;</a></li>
+        <li class="page-item"><a class="page-link"
+                href="?page={{ comments.previous_page_number }}&order={{ order }}">&laquo;</a></li>
         {% else %}
         <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
         {% endif %}
@@ -282,11 +311,11 @@
         {% if comments.number == i %}
         <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
         {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ i }}&order={{ order }}">{{ i }}</a></li>
         {% endif %}
         {% endfor %}
         {% if comments.has_next %}
-        <li><a class="page-link" href="?page={{ comments.next_page_number }}">&raquo;</a></li>
+        <li><a class="page-link" href="?page={{ comments.next_page_number }}&order={{ order }}">&raquo;</a></li>
         {% else %}
         <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
         {% endif %}
@@ -299,6 +328,26 @@
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
+<script>
+    $.ajaxSetup({
+        data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    // Note must use class as an id is unique to one element on the page
+    $(".upvote").submit(function (e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        var form = $(this);
+        var comment_id = $(this).data("unique-comment-id")
+        var url = form.data('url');
+
+        $.post(url).done(function (data) {
+            // get your response data
+            $(".upvoteComment" + comment_id).text(data.count);
+        });
+
     });
 </script>
 {% endblock page_content %}

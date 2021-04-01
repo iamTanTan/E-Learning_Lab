@@ -4,6 +4,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import datetime
+from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponse, JsonResponse
+
 
 #  View for the 'discussions.html' which displays a list of discussions for a given course id
 @login_required
@@ -19,6 +22,8 @@ def discussions(request, id_field):
 
     return render(request, "discussions.html", context)
 
+
+
 # View for the 'discussion_detail.html' displays a particular board (pk) and its comments and replies
 @login_required
 def discussion_detail(request, id_field, pk):
@@ -28,12 +33,23 @@ def discussion_detail(request, id_field, pk):
     if (not discussions.exists()):
         return render(request, "not_exists.html", {})
 
-    discussion = discussions.get(pk=pk)
+    discussion = discussions.get(pk=pk)    
 
-    # Retrieve all comments associated with the discussion
-    all_comments = discussion.comments.all()
+    # Retrieve all comments associated with the discussion according to user selected order
 
-    paginator = Paginator(all_comments, 20)
+    # default order is by number of up votes
+    order = "-num_vote_up"
+    if (request.GET.get('order')):
+        order = request.GET.get('order')
+        if (order == "newest"):
+            order = "-created_on"
+        if (order == "best"):
+            order = "-num_vote_up"
+
+    all_comments = discussion.comments.all().order_by(order)
+
+    # Use paginator display only 20 comments at a time
+    paginator = Paginator(all_comments, 3)
     page = request.GET.get('page', '1')
     try:
         comments = paginator.page(page)
@@ -58,6 +74,9 @@ def discussion_detail(request, id_field, pk):
             # Set form to default state after submit
             comment_form = CommentForm()
 
+            # Reload after creating comment
+            return redirect(Discussion.get_absolute_url(discussion))
+
     else:
         comment_form = CommentForm()
 
@@ -69,8 +88,7 @@ def discussion_detail(request, id_field, pk):
         reply_form = ReplyForm(request.POST)
         if reply_form.is_valid():
 
-            # Get the parent id from the comment that will be replied to
-            
+            # Get the parent id from the comment that will be replied to            
             parent_id = request.POST.get('parent_id')
             parent_comment = Comment.objects.get(id=parent_id)
             # Create Reply object but don't save to database yet
@@ -86,13 +104,17 @@ def discussion_detail(request, id_field, pk):
     else:
         reply_form = ReplyForm()
 
-    return render(request, 'discussion_detail.html', {'discussion': discussion,
-                                           'comments': comments,
-                                           'new_comment': new_comment,
-                                           'comment_form': comment_form,
-                                           'new_reply': new_reply,
-                                           'reply_form': reply_form,
-                                            })
+
+    context = {'discussion': discussion,
+                'comments': comments,
+                'new_comment': new_comment,
+                'comment_form': comment_form,
+                'new_reply': new_reply,
+                'reply_form': reply_form,
+                'order': order,
+                }
+
+    return render(request, 'discussion_detail.html', context)
 
 
 
@@ -162,3 +184,27 @@ def update_reply(request, pk):
         reply_form.save() 
 
     return redirect(Discussion.get_absolute_url(discussion))
+
+
+@login_required
+@csrf_protect
+def upvote_comment(request, pk):
+    
+    # Retrieve comment from upvote event 
+    comment = Comment.objects.get(pk=pk)
+    user = request.user
+    
+    if request.is_ajax() and request.method == "POST":
+        if (comment.votes.exists(user.id)):
+            comment.votes.delete(user.id)
+        
+        else:
+            comment.votes.up(user.id)
+        
+        data = {
+            "count": comment.votes.count(),
+        }
+        
+        return JsonResponse(data)
+    else:
+        return HttpResponse(400, 'Invalid form')

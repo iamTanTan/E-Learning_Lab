@@ -10,11 +10,13 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content',)
-
+ 
     content = forms.CharField(
-        label="Comment",
-        widget=forms.Textarea(attrs={'placeholder': 'Write a comment here'})
+        label="",
+        widget=forms.Textarea(attrs={'placeholder': 'Write a comment here...', 'rows': 6})
     )
+
+    
 
 class ReplyForm(forms.ModelForm):
     class Meta:
@@ -22,8 +24,8 @@ class ReplyForm(forms.ModelForm):
         fields = ('reply',)
 
     reply = forms.CharField(
-        label="Reply",
-        widget=forms.Textarea()
+        label="",
+        widget=forms.Textarea(attrs={'placeholder': 'Write a response here...', 'rows': 4})
     )
 
 

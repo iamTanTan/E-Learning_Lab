@@ -4,6 +4,10 @@ from Components.courses.models import Courses
 from django.urls import reverse
 import uuid, datetime
 from profanity.validators import validate_is_profane
+from django.contrib.contenttypes.fields import GenericRelation
+
+#visit https://github.com/shellfly/django-vote for info about api for this installed app
+from vote.models import VoteModel
 
 # sets User to the currently active user model
 User = get_user_model()
@@ -29,18 +33,22 @@ class Discussion(models.Model):
         return reverse("discussion_detail", kwargs={'id_field': self.courses.id, 'pk': self.id}) #
 
 
-# Defines the model for a Comment which is the child of a Discussion
-class Comment(models.Model):
+# Defines the model for a Comment which is the child of a Discussion (note: votes: is also a field from VoteModel)
+class Comment(VoteModel, models.Model):
     parent_discussion = models.ForeignKey('Discussion', on_delete=models.CASCADE, to_field='id', related_name="comments")
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=1000, validators=[validate_is_profane])
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
-    up_vote_count = models.IntegerField(default=0)
     is_removed = models.BooleanField(default=False)
 
+    # Fields From VoteModel
+    # <django.db.models.fields.IntegerField: vote_score>
+    # <django.db.models.fields.PositiveIntegerField: num_vote_up>
+    # <django.db.models.fields.PositiveIntegerField: num_vote_down>
+
     class Meta:
-        ordering = ["-created_on", "-up_vote_count"]
+        ordering = ["-created_on", "-num_vote_up"]
 
     # Defines the save functionality
     def save(self):
@@ -54,13 +62,12 @@ class Comment(models.Model):
 
 
 # Defines the model for a Reply which is the child of a Comment
-class Reply(models.Model):
+class Reply(VoteModel, models.Model):
     comment = models.ForeignKey('Comment', related_name='replies',  on_delete=models.CASCADE)
     reply = models.TextField(max_length=1000, validators=[validate_is_profane])
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
-    up_vote_count = models.IntegerField(default=0)
     is_removed = models.BooleanField(default=False)
 
     # Defines the save functionality
@@ -71,7 +78,8 @@ class Reply(models.Model):
         super(Reply, self).save()
 
     class Meta:
-        ordering = ["-up_vote_count"]
+        ordering = ["-created_on"]
 
     def __str__(self):
         return "Reply {} by {}".format(self.reply, self.created_by)
+
