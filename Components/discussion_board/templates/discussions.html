@@ -69,8 +69,13 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h2 class="card-title">{{ discussion.title }}</h2>
-                            <p class="card-text text-muted h6">{{ discussion.created_by }} |
-                                {{ discussion.created_on}} </p>
+                            <p class="card-text text-muted h6">
+                                {% if discussion.created_by.is_staff %}
+                                <i class="mdi mdi-shield-account-outline"></i>
+                                {% endif %}
+                                {{ discussion.created_by }} |
+                                {{ discussion.created_on}}
+                            </p>
                             <p class="card-text">{{discussion.content|slice:":200" }}</p>
                             <!-- URL takes in the course ID and specific discussion pk -->
                             <a href="{% url 'discussion_detail' discussions.0.courses.id discussion.pk %}"

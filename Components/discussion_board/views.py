@@ -101,6 +101,8 @@ def discussion_detail(request, id_field, pk):
             # Set form to default state after submit
             reply_form = ReplyForm()
 
+            return redirect(Discussion.get_absolute_url(discussion))
+
     else:
         reply_form = ReplyForm()
 
@@ -145,7 +147,7 @@ def delete_own_reply(request, pk):
     discussion = parent_comment.parent_discussion
 
     # perform deletion of reply
-    if(request.user == deleted_reply.created_by):
+    if(request.user == deleted_reply.created_by or request.user.is_staff):
         deleted_reply.delete()
 
         # If the parent comment is removed and has no replies, instead of rendering the placeholder,
