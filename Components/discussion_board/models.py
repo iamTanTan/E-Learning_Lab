@@ -42,7 +42,7 @@ class Comment(VoteModel, models.Model):
     updated_on = models.DateTimeField(auto_now_add=True)
     is_removed = models.BooleanField(default=False)
 
-    # Fields From VoteModel
+    # Hidden Fields From VoteModel
     # <django.db.models.fields.IntegerField: vote_score>
     # <django.db.models.fields.PositiveIntegerField: num_vote_up>
     # <django.db.models.fields.PositiveIntegerField: num_vote_down>
@@ -77,8 +77,13 @@ class Reply(VoteModel, models.Model):
         self.updated_on = datetime.date.today()
         super(Reply, self).save()
 
+    # Hidden Fields From VoteModel
+    # <django.db.models.fields.IntegerField: vote_score>
+    # <django.db.models.fields.PositiveIntegerField: num_vote_up>
+    # <django.db.models.fields.PositiveIntegerField: num_vote_down>
+
     class Meta:
-        ordering = ["-created_on"]
+        ordering = ["-num_vote_up"]
 
     def __str__(self):
         return "Reply {} by {}".format(self.reply, self.created_by)

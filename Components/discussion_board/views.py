@@ -144,8 +144,14 @@ def delete_own_reply(request, pk):
     parent_comment = deleted_reply.comment
     discussion = parent_comment.parent_discussion
 
-    # perform deletion
-    deleted_reply.delete()
+    # perform deletion of reply
+    if(request.user == deleted_reply.created_by):
+        deleted_reply.delete()
+
+        # If the parent comment is removed and has no replies, instead of rendering the placeholder,
+        # delete the comment outright to save space in database and in the discussion
+        if (parent_comment.is_removed and not parent_comment.replies.exists()):
+            parent_comment.delete()
 
     return redirect(Discussion.get_absolute_url(discussion))
            
@@ -203,6 +209,30 @@ def upvote_comment(request, pk):
         
         data = {
             "count": comment.votes.count(),
+        }
+        
+        return JsonResponse(data)
+    else:
+        return HttpResponse(400, 'Invalid form')
+
+
+@login_required
+@csrf_protect
+def upvote_reply(request, pk):
+    
+    # Retrieve reply from upvote event 
+    reply = Reply.objects.get(pk=pk)
+    user = request.user
+    
+    if request.is_ajax() and request.method == "POST":
+        if (reply.votes.exists(user.id)):
+            reply.votes.delete(user.id)
+        
+        else:
+            reply.votes.up(user.id)
+        
+        data = {
+            "count": reply.votes.count(),
         }
         
         return JsonResponse(data)
