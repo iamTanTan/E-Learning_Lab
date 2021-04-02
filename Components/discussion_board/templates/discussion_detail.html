@@ -85,8 +85,9 @@
         </div>
         <!-- END Discussion Topic Display -->
 
+
         <!-- Comments with Replies Display -->
-        <div class="col-lg-12">
+        <div id="comment-section" class="col-lg-12">
             <div class="col-md-8 card mb-4 mt-3 mx-auto shadow">
                 <div class="card-body">
                     <!-- comments -->
@@ -102,8 +103,8 @@
                     <!-- Sort Buttons -->
                     <span class="d-inline-block float-sm-right">
                         Sort By:
-                        <a class="btn btn-sm btn-light " href="?order=newest">Newest</a>
-                        <a class="btn btn-sm btn-light" href="?order=best">Most Liked</a>
+                        <a class="btn btn-sm btn-light " href="?order=newest#comment-section">Newest</a>
+                        <a class="btn btn-sm btn-light" href="?order=best#comment-section">Most Liked</a>
                     </span>
                     <!-- END Sort Buttons -->
 
@@ -160,10 +161,11 @@
                             <!-- END Options dropdown -->
                         </div>
 
-
+                        <!-- Start Comment Content Display -->
                         <div class="mt-3 mb-2">
                             {{ comment.content | linebreaks | wordwrap:80 }}
                         </div>
+                        <!-- END Comment Content Display -->
 
                         <!--  Update Comment Form -->
                         <div class="collapse collapseCommentUpdateForm{{ comment.id }}">
@@ -320,9 +322,6 @@
 
                 </div>
             </div>
-
-
-
 
             <!-- CommentForm Modal -->
             <div class="modal" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"

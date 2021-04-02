@@ -1,10 +1,20 @@
-from .models import Comment, Reply
+from .models import Comment, Reply, Discussion
 from django import forms
 
-# class DiscussionForm(forms.ModelForm):
-#     class Meta:
-#         model = Discussion
-#         fields = ('created_by', 'content')
+class DiscussionForm(forms.ModelForm):
+    class Meta:
+        model = Discussion
+        fields = ('title', 'content',)
+        
+    title = forms.CharField(
+        label="Title",
+        widget=forms.Textarea(attrs={'placeholder': 'Staff: Please make an appropriate and descriptive title here...', 'rows': 2})
+    )
+
+    content = forms.CharField(
+        label="Description/Content",
+        widget=forms.Textarea(attrs={'placeholder': 'Staff: Please write the discussion description here... \n\nNote: Your username will be visible as the poster\nNote: Any deletions of discussions need to be handled on the admin site', 'rows': 8})
+    )
 
 class CommentForm(forms.ModelForm):
     class Meta:

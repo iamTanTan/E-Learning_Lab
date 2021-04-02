@@ -1,23 +1,44 @@
 from .models import Discussion, Comment, Reply
-from .forms import CommentForm, ReplyForm
+from Components.courses.models import Courses
+from .forms import CommentForm, ReplyForm, DiscussionForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-import datetime
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse, JsonResponse
-
+import datetime
 
 #  View for the 'discussions.html' which displays a list of discussions for a given course id
 @login_required
 def discussions(request, id_field):
     discussions = Discussion.objects.all().filter(courses = (str)(id_field))
   
+    # Render not exists if no discussions exist yet
     if (not discussions.exists()):
         return render(request, "not_exists.html", {})
 
+    # New Discussion POST Form
+    new_discussion = None
+    
+    if request.method == 'POST':
+        discussion_form = DiscussionForm(request.POST)
+        if discussion_form.is_valid():
+            # Create Discussion object but don't save to database yet
+            new_discussion = discussion_form.save(commit=False)
+            # Assign the current course to the discussion board         
+            new_discussion.courses = Courses.objects.get(id=id_field)
+            new_discussion.created_by = request.user
+            # Save the comment to the database
+            new_discussion.save()
+            # Set form to default state after submit
+            discussion_form = DiscussionForm()
+
+    else:
+        discussion_form = DiscussionForm()
+
     context = {
-        "discussions": discussions,     
+        "discussions": discussions,
+        "DiscussionForm": discussion_form,   
     }
 
     return render(request, "discussions.html", context)
@@ -49,7 +70,7 @@ def discussion_detail(request, id_field, pk):
     all_comments = discussion.comments.all().order_by(order)
 
     # Use paginator display only 20 comments at a time
-    paginator = Paginator(all_comments, 3)
+    paginator = Paginator(all_comments, 2)
     page = request.GET.get('page', '1')
     try:
         comments = paginator.page(page)

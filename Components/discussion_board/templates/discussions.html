@@ -1,6 +1,9 @@
 {% extends "base2.html" %}
 
 {% block page_content %}
+
+{% load crispy_forms_tags %}
+
 <div id="wrapper">
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -52,6 +55,10 @@
                         <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
                         <div class="col-md-8 offset-md-2">
                             <h1>{{ discussions.courses }} Discussions</h1>
+                            {% if user.is_staff %}
+                            <a class="btn btn-md btn-success" href="#create_new_discussion">Create a New Discussion as
+                                Staff</a>
+                            {% endif %}
                             <hr>
                         </div>
                     </div>
@@ -85,10 +92,27 @@
                     </div>
                     <br>
                     {% endfor %}
+
+                    <!-- END Discussion Entries Column -->
+                    {% if user.is_staff %}
+                    <a name="create_new_discussion">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <h3 class="card-title text-center"> Create a New Discussion </h3>
+                                <form method="post" action="{% url 'discussions' discussions.0.courses.id %}">
+                                    {% csrf_token %}
+                                    {{ DiscussionForm|crispy }}
+                                    <button type="submit" class="btn btn-md btn-success">Create Discussion</button>
+                                </form>
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                    <!-- Create New Discussion Form for Staff -->
+
                 </div>
             </div>
         </div>
-        <!-- END Discussion Entries Column -->
     </div>
 </div>
 <!-- Toggle Menu Feature -->
