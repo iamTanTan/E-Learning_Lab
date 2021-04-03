@@ -3,7 +3,7 @@ from Components.courses.models import Courses
 from .forms import CommentForm, ReplyForm, DiscussionForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse, JsonResponse
 import datetime
@@ -70,7 +70,7 @@ def discussion_detail(request, id_field, pk):
     all_comments = discussion.comments.all().order_by(order)
 
     # Use paginator display only 20 comments at a time
-    paginator = Paginator(all_comments, 2)
+    paginator = Paginator(all_comments, 20)
     page = request.GET.get('page', '1')
     try:
         comments = paginator.page(page)
@@ -142,24 +142,27 @@ def discussion_detail(request, id_field, pk):
 
 
 @login_required
-def delete_own_comment(request, pk):
-    # delete_own_comment or flag as removed if replies exist
+def delete_comment(request, pk):
+    
+    # delete_comment or flag as removed if replies exist
     deleted_comment = Comment.objects.get(pk=pk)
     discussion = deleted_comment.parent_discussion
 
-    if not deleted_comment.replies.exists():
-        deleted_comment.delete()
+    # Enable delete options for comment creator or staff member
+    if (request.user == deleted_comment.created_by or request.user.is_staff):
+        if not deleted_comment.replies.exists():
+            deleted_comment.delete()
             
-    else:
-        deleted_comment.is_removed = True
-        deleted_comment.save()
+        else:
+            deleted_comment.is_removed = True
+            deleted_comment.save()
 
     return redirect(Discussion.get_absolute_url(discussion))
            
     
 
 @login_required
-def delete_own_reply(request, pk):
+def delete_reply(request, pk):
     # get particular reply instance
     deleted_reply = Reply.objects.get(pk=pk)
 
@@ -167,7 +170,7 @@ def delete_own_reply(request, pk):
     parent_comment = deleted_reply.comment
     discussion = parent_comment.parent_discussion
 
-    # perform deletion of reply
+    # Enable and perform deletion for reply creator or staff member
     if(request.user == deleted_reply.created_by or request.user.is_staff):
         deleted_reply.delete()
 

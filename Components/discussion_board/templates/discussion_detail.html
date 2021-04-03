@@ -148,7 +148,9 @@
                                         <!--  END Reply Button Trigger for form -->
 
                                         <!-- Delete Comment Form -->
-                                        <form method="post" action="{% url 'delete_own_comment' comment.pk %}">
+                                        <form class="confirm-delete" method="post" action="."
+                                            data-object-id="{{ comment.id }}"
+                                            data-url="{% url 'delete_comment' comment.pk %}">
                                             {% csrf_token %}
                                             <button type="submit" class="dropdown-item"><i
                                                     class="mdi mdi-delete"></i>Delete</button>
@@ -159,6 +161,31 @@
                             </span>
                             {% endif %}
                             <!-- END Options dropdown -->
+
+                            <!-- Options Dropdown for staff who created the reply -->
+                            {% if user.is_staff %}
+                            <span class="ml-auto mb-auto">
+                                <div class="btn-group float-right pr-3">
+                                    <button type="button" class="btn btn-warning btn-sm rounded" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <!-- Delete Comment Form -->
+                                        <form class="confirm-delete" method="post" action="."
+                                            data-object-id="{{ comment.id }}"
+                                            data-url="{% url 'delete_comment' comment.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item"><i
+                                                    class="mdi mdi-delete"></i>DELETE AS STAFF</button>
+                                        </form>
+                                        <!-- END Delete Comment Form -->
+                                    </div>
+                                </div>
+                            </span>
+                            {% endif %}
+                            <!-- END Options for staff dropdown -->
                         </div>
 
                         <!-- Start Comment Content Display -->
@@ -216,8 +243,6 @@
                                 </form>
                             </div>
                             <!-- END ReplyForm  -->
-
-
                         </div>
                     </div>
 
@@ -246,6 +271,7 @@
                                                 <i class="mdi mdi-dots-vertical"></i>
                                             </button>
 
+
                                             <!-- Edit Reply Button Trigger for form -->
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <button class="dropdown-item" type="button" data-toggle="collapse"
@@ -256,15 +282,46 @@
                                                 </button>
                                                 <!--  END Reply Button Trigger for form -->
                                                 <!-- Delete Reply Form -->
-                                                <form method="post" action="{% url 'delete_own_reply' reply.pk %}">
+                                                <form class="confirm-delete" method="post" action="."
+                                                    data-object-id="{{ reply.id }}"
+                                                    data-url="{% url 'delete_reply' reply.pk %}">
                                                     {% csrf_token %}
                                                     <button type="submit" class="dropdown-item"><i
-                                                            class="mdi mdi-delete"></i>Delete</button>
+                                                            class="mdi mdi-delete"></i>Delete
+                                                    </button>
                                                 </form>
                                                 <!-- END Delete Reply Form -->
                                             </div>
                                         </div>
                                     </span>
+                                    <!-- END Options dropdown -->
+
+                                    {% endif %}
+
+                                    <!-- Options Dropdown for Staff to moderate replies -->
+                                    {% if user.is_staff %}
+
+                                    <span class="ml-auto mb-auto ">
+                                        <div class="btn-group float-right pr-3">
+                                            <button type="button" class="btn btn-warning btn-sm rounded"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical"></i>
+                                            </button>
+
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <!-- Delete Reply Form -->
+                                                <form class="confirm-delete" method="post" action="."
+                                                    data-object-id="{{ reply.id }}"
+                                                    data-url="{% url 'delete_reply' reply.pk %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item"><i
+                                                            class="mdi mdi-delete"></i>DELETE AS STAFF</button>
+                                                </form>
+                                                <!-- END Delete Reply Form -->
+                                            </div>
+                                        </div>
+                                    </span>
+
                                     <!-- END Options dropdown -->
 
                                     {% endif %}
@@ -351,35 +408,37 @@
                 </div>
             </div>
             <!-- END CommentForm modal -->
+
+
         </div>
     </div>
     <!-- END Comments Display -->
 
-</div>
 
-<!-- Pagination -->
-{% if comments.has_other_pages %}
-<ul class="pagination pagination-lg justify-content-center">
-    {% if comments.has_previous %}
-    <li class="page-item"><a class="page-link"
-            href="?page={{ comments.previous_page_number }}&order={{ order }}">&laquo;</a></li>
-    {% else %}
-    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+
+    <!-- Pagination -->
+    {% if comments.has_other_pages %}
+    <ul class="pagination pagination-lg justify-content-center">
+        {% if comments.has_previous %}
+        <li class="page-item"><a class="page-link"
+                href="?page={{ comments.previous_page_number }}&order={{ order }}">&laquo;</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+        {% for i in comments.paginator.page_range %}
+        {% if comments.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}&order={{ order }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if comments.has_next %}
+        <li><a class="page-link" href="?page={{ comments.next_page_number }}&order={{ order }}">&raquo;</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+    </ul>
     {% endif %}
-    {% for i in comments.paginator.page_range %}
-    {% if comments.number == i %}
-    <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
-    {% else %}
-    <li class="page-item"><a class="page-link" href="?page={{ i }}&order={{ order }}">{{ i }}</a></li>
-    {% endif %}
-    {% endfor %}
-    {% if comments.has_next %}
-    <li><a class="page-link" href="?page={{ comments.next_page_number }}&order={{ order }}">&raquo;</a></li>
-    {% else %}
-    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-    {% endif %}
-</ul>
-{% endif %}
 
 </div>
 <!-- Toggle Menu Feature -->
@@ -429,6 +488,25 @@
             $(".upvoteReply" + reply_id).text(data.count);
         });
 
+    });
+</script>
+
+<!-- Delete Confirmation -->
+<script>
+    $(".confirm-delete").click(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var object_id = $(this).data("object-id");
+        var url = form.data('url');
+        var ask = confirm('Are you sure you want to delete this item?');
+
+        if (ask && object_id) {
+            $.post(url).done(function () {
+                window.location.reload(true);
+            })
+            // pass in true since we need to query again to update paginator
+
+        }
     });
 </script>
 
