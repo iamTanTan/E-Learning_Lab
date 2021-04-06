@@ -2,7 +2,7 @@ from django.shortcuts import render
 from Components.quizapp.models import Quiz,Question
 
 # Create your views here.
-def examonline(request):
+def examonline(request, id_field):
     results= Question.objects.all()
     #This should be changed
     #console.log(results)

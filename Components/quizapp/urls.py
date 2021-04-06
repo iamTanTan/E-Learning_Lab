@@ -4,5 +4,5 @@ from Components.quizapp import views
 
 urlpatterns = [
    # path('admin/', admin.site.urls),
-   path('',views.examonline, name='quiz')
+   path('<id_field>/',views.examonline, name='examonline')
 ]
