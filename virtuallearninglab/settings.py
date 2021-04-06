@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'tinymce',
     'Components.home',
     'Components.admin_panel',
+    'Components.profile',
     'ckeditor',
     'ckeditor_uploader',
 ]

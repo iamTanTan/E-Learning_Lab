@@ -3,6 +3,7 @@
 {% load static%}
 
 <!-- START Head Section -->
+
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -17,6 +18,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+  </script>
   <link rel="stylesheet" type="text/css" href="{%static '/style2.css' %}">
   <link rel="stylesheet" href="{%static '/fixed.css' %}">
 </head>
@@ -35,20 +38,27 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item active">
-          <a class="nav-link" href="{% url 'home' %}">HOME</a>
+          <a class="nav-link" href="{% url 'home' %}"><i class="mdi mdi-home-outline"></i>HOME</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="{% url 'course' %}">COURSES</a>
+          <a class="nav-link" href="{% url 'course' %}"><i class="mdi mdi-school-outline"></i>COURSES</a>
         </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'profile' %}"><i class="mdi mdi-account-outline"></i>PROFILE</a>
+        </li>
+        {% endif %}
+
         {% if user.is_superuser %}
         <li class="nav-item active">
-          <a class="nav-link" href="{% url 'admin' %}">ADMIN PANEL</a>
+          <a class="nav-link" href="{% url 'admin' %}"><i class="mdi mdi-shield-account-outline"></i>ADMIN PANEL</a>
         </li>
         {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <li>User: {{ user.get_username }}</li>
-      <li style="padding-left:1rem ;"><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+      <li style="padding-left:1rem ;"><a href="{% url 'logout'%}?next={{request.path}}">Logout <i
+            class="mdi mdi-logout-variant"></i></a></li>
       {% else %}
       <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
       {% endif %}
