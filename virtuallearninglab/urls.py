@@ -30,7 +30,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('admin_panel/', include('Components.admin_panel.urls')),
     path('tinymce/', include('tinymce.urls')),
-    path('quizapp/', include("Components.quizapp.urls")),
+    path('quiz/', include("Components.quiz.urls")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

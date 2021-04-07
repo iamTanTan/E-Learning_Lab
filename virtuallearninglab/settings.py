@@ -47,7 +47,11 @@ INSTALLED_APPS = [
     'Components.admin_panel',
     'ckeditor',
     'ckeditor_uploader',
-    'Components.quizapp',
+    #quiz_app
+    'Components.quiz',
+    'Components.multichoice',
+    'Components.true_false',
+    'Components.essay',
 ]
 
 MIDDLEWARE = [
