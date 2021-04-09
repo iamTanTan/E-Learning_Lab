@@ -18,3 +18,7 @@ class Courses(models.Model):
     class Meta: 
         # Add verbose name 
         verbose_name = 'Courses/Classe'
+
+    # returns the url to the particual discussions 'discussion_detail.html' 
+    def get_absolute_url(self):
+        return reverse("class_detail", kwargs={'id_field': self.courses.id}) #
