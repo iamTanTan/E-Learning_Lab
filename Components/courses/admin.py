@@ -44,6 +44,9 @@ class CoursesAdmin(admin.ModelAdmin):
         ('Unique Id (Do not edit)', {
             'fields': ['id']
         }),
+        ('Students', {
+            'fields': ['users']
+        }),
     )
   
 

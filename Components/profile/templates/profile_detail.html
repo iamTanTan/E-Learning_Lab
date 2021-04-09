@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+<div class="container">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow">
+
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <div class="mt-3">
+                                <h4>{{ user.username }}</h4>
+                                <p class="text-secondary mb-1">{{ user.profile.get_role_display }}</p>
+                                <p class="text-muted font-size-sm">{{ user.profile.location }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li
+                            class="bg-light list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6>My Courses</h6>
+                        </li>
+
+                        {% for course in enrolled_courses %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h7>{{course.name}}</h7>
+                            <span class="text-secondary"><a href="{% url 'welcome_page' course.id  %}">Visit</a></span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="card shadow mt-3">
+
+                    <div class="bg-light list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6>Quizzes and Assessments</h6>
+                    </div>
+
+                    <div class="dropdown list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                        <button class=" btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for course in courses_list %}
+                            <a class="dropdown-item" href="{% url 'welcome_page' course.id %}">Visit</a>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card shadow mb-3">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <div class="card-title mt-4 mb-0">
+                            <h4>User Information</h4>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Username</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user.username }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Password</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                *************************
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user.email }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Birthday</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user.profile.birthdate }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Location</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user.profile.location }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
