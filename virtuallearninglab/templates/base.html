@@ -19,14 +19,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
-  </script>
   <link rel="stylesheet" type="text/css" href="{%static '/style2.css' %}">
   <link rel="stylesheet" href="{%static '/fixed.css' %}">
 </head>
 <!-- END Head Section -->
 
 <!-- START Navbar Section -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light  border-bottom">
   <div class="container">
     <a class="navbar-brand">E-Learning Lab</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -43,26 +42,27 @@
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'course' %}"><i class="mdi mdi-school-outline"></i>COURSES</a>
         </li>
-        {% if user.is_authenticated %}
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'profile' %}"><i class="mdi mdi-account-outline"></i>PROFILE</a>
-        </li>
-        {% endif %}
 
         {% if user.is_superuser %}
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'admin' %}"><i class="mdi mdi-shield-account-outline"></i>ADMIN PANEL</a>
         </li>
         {% endif %}
+
       </ul>
       {% if user.is_authenticated %}
-      <li>User: {{ user.get_username }}</li>
-      <li style="padding-left:1rem ;"><a href="{% url 'logout'%}?next={{request.path}}">Logout <i
-            class="mdi mdi-logout-variant"></i></a></li>
-      {% else %}
-      <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-      {% endif %}
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'profile' %}"><i class="mdi mdi-account-outline"></i>MY PROFILE</a>
+        </li>
 
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}"><i class="mdi mdi-logout"></i>Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item active"><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 
@@ -70,31 +70,31 @@
 <!-- END Navbar Section -->
 
 <!-- START Custom Content Section -->
-<div clas="container-content">
+<div class="container-fluid">
   {% block page_content %}{% endblock %}
 </div>
 <!-- END Custom Content Section -->
 
 <!-- START Footer Section -->
-<div class="footer">
-  <div class="row ">
+<footer class="footer text-center text-lg-start">
+  <div class="container p-4">
 
-    <div class="col-md-6 text-right">
+    <div>
       <h3><u> E-Learning Lab </u></h3>
-      <h5>Empowering online communities<br> with STEM education </h5>
+      <h5>Empowering online communities with STEM education </h5>
     </div>
 
-    <div class="col-md-6">
+    <div>
       <h3> Contact us</h3>
       Email: admin@elearning-lab.org
     </div>
 
-  </div>
+    <div>
+      <small> © 2021 E-Learning-lab </small>
+    </div>
 
-  <div class="text-center">
-    <small> © 2021 E-Learning-lab </small>
   </div>
-</div>
+</footer>
 <!-- END Footer Section -->
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
