@@ -68,7 +68,7 @@ class SubCategory(models.Model):
 @python_2_unicode_compatible
 class Quiz(models.Model):
 
-    courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
+    courses = models.ForeignKey('courses.Courses',  on_delete=models.CASCADE, related_name="quizzes", to_field= 'id', default="dd390af4-07f1-4597-b48a-f585fd79289d" )
 
     title = models.CharField(
         verbose_name=_("Title"),
@@ -99,13 +99,13 @@ class Quiz(models.Model):
         help_text=_("Number of questions to be answered on each attempt."))
 
     answers_at_end = models.BooleanField(
-        blank=False, default=False,
+        blank=False, default=True,
         help_text=_("Correct answer is NOT shown after question."
                     " Answers displayed at the end."),
         verbose_name=_("Answers at end"))
 
     exam_paper = models.BooleanField(
-        blank=False, default=False,
+        blank=False, default=True,
         help_text=_("If yes, the result of each"
                     " attempt by a user will be"
                     " stored. Necessary for marking."),

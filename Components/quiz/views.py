@@ -9,6 +9,7 @@ from django.views.generic import DetailView, ListView, TemplateView, FormView
 from .forms import QuestionForm, EssayForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from Components.essay.models import Essay_Question
+from Components.courses.models import Courses
 
 
 class QuizMarkerMixin(object):
@@ -79,6 +80,25 @@ class ViewQuizListByCategory(ListView):
     def get_queryset(self):
         queryset = super(ViewQuizListByCategory, self).get_queryset()
         return queryset.filter(category=self.category, draft=False)
+
+# view for a particular courses gradebook
+def viewQuizScoresByCourse(request, course_id):
+    course = Courses.objects.get(id=str(course_id))
+    
+    course_quizzes = course.quizzes.all()
+
+    progress, c = Progress.objects.get_or_create(user=request.user)
+    
+    quiz_progress = progress.show_exams()
+    print(quiz_progress)
+
+    context = {
+        "course_quizzes": course_quizzes,
+        "quiz_progress": quiz_progress,
+    }
+
+    return render(request, "course_progress.html", context)
+
 
 
 class QuizUserProgressView(TemplateView):

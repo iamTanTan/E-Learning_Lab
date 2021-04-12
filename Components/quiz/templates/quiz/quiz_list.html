@@ -53,7 +53,7 @@
 					<th>Course</th>
 					<th>Quiz Title</th>
 					<th>Category</th>
-					<th>Single attempt</th>
+					<!-- <th>Single attempt</th> -->
 					<th></th>
 				</tr>
 			</thead>
@@ -65,7 +65,7 @@
 				<tr>
 					<td>{{ quiz.courses.name }}</td>
 					<td>{{ quiz.title }}</td>
-					<td>{{ quiz.category }}</td>
+					<!-- <td>{{ quiz.category }}</td> -->
 
 					<td>{{ quiz.single_attempt }}</td>
 
@@ -83,7 +83,7 @@
 		{% else %}
 		<p>{% trans "There are no available quizzes" %}.</p>
 		{% endif %}
-		<a class="btn btn-lg btn-success" href="{% url 'quiz_progress' %}">View Quiz Scores</a>
+		<a class="btn btn-lg btn-success" href="{% url 'course_progress' quiz_list.0.courses.id %}">View Quiz Scores</a>
 	</div>
 </div>
 {% endblock %}

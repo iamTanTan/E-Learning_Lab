@@ -9,6 +9,8 @@ urlpatterns = [
 
     path('<course_id>/', views.QuizListView, name='quiz_index'),
 
+    path('<course_id>/gradebook/', views.viewQuizScoresByCourse, name='course_progress'),
+
     path(r'^category/$',
         views.CategoriesListView.as_view(),
         name='quiz_category_list_all'),
