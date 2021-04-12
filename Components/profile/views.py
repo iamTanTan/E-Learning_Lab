@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from .forms import ProfileForm
 from Components.courses.models import Courses
 
 # Create your views here.
@@ -26,15 +27,27 @@ def profile_detail(request):
 
     return render(request, "profile_detail.html", context)
     
+@login_required
 def enroll_in_course(request, course_id):
     
     request.user.courses.add(course_id)
 
     return redirect(Profile.get_absolute_url(request.user.profile))
 
-
+@login_required
 def unenroll_from_course(request, course_id):
 
     request.user.courses.remove(course_id)
 
     return redirect(Discussion.get_absolute_url(request.user.profile))
+
+@login_required
+def update_profile(request):
+    profile = request.user.profile
+
+    profile_form = ProfileForm(request.POST or None, instance=profile)
+    
+    if profile_form.is_valid():
+        profile_form.save
+
+    return redirect(Profile.get_absolute_url(request.user.profile))
