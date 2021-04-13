@@ -33,10 +33,39 @@ def QuizListView(request, course_id):
     quiz_list = Quiz.objects.all().filter(courses = (str)(course_id) )
     quiz_list.filter(draft=False)
 
+    course = Courses.objects.get(id=str(course_id))
+    
+    course_quizzes = course.quizzes.all()
+
+    progress, c = Progress.objects.get_or_create(user=request.user)
+    
+    quiz_progress = progress.show_exams()
+    print(quiz_progress)
+    
+    quiz_count = len(course_quizzes)
+
+    quizzes_taken = []
+    count = 0
+    for assesment in quiz_progress:
+        if assesment.quiz.title not in quizzes_taken:
+            quizzes_taken.append(assesment.quiz.title)
+            count = count + 1
+
+    if quiz_count != 0:
+        progress = float(count) / float(quiz_count)
+    else:
+        progress = 0
+        
+    context = {
+        'quiz_list': quiz_list,
+        "course_quizzes": course_quizzes,
+        "quiz_progress": progress,
+    }
+
     if(not quiz_list.exists()):
         return render(request, "not_exists.html", {})
 
-    return render(request, 'quiz/quiz_list.html', {'quiz_list': quiz_list})
+    return render(request, 'quiz/quiz_list.html', context)
 
 
 class QuizDetailView(DetailView):
@@ -86,7 +115,7 @@ def viewQuizScoresByCourse(request, course_id):
     course = Courses.objects.get(id=str(course_id))
     
     course_quizzes = course.quizzes.all()
-
+    
     progress, c = Progress.objects.get_or_create(user=request.user)
     
     quiz_progress = progress.show_exams()
