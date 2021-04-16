@@ -37,10 +37,10 @@
                 <a href="{% url 'reading_material' discussion.courses.id %}">Reading Material</a>
             </li>
             <li>
-                <a href="{% url 'quiz' discussion.courses.id %}">Assessments</a>
+                <a href="{% url 'discussions' discussion.courses.id %}">Discussion Boards</a>
             </li>
             <li>
-                <a href="{% url 'discussions' discussion.courses.id %}">Discussion Boards</a>
+                <a href="{% url 'quiz_index' discussion.courses.id %}">Assessments</a>
             </li>
         </ul>
     </div>

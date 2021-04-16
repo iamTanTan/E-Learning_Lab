@@ -36,10 +36,10 @@
                 <a href="{% url 'reading_material' discussions.0.courses.id %}">Reading Material</a>
             </li>
             <li>
-                <a href="{% url 'quiz' discussions.0.courses.id %}">Assessments</a>
+                <a href="{% url 'discussions' discussions.0.courses.id %}">Discussion Boards</a>
             </li>
             <li>
-                <a href="{% url 'discussions' discussions.0.courses.id %}">Discussion Boards</a>
+                <a href="{% url 'quiz_index' discussions.0.courses.id %}">Assessments</a>
             </li>
         </ul>
     </div>

@@ -34,11 +34,13 @@
                 <a href="{% url 'reading_material' posts.0.courses.id %}">Reading Material</a>
             </li>
             <li>
-                <a href="{% url 'quiz' posts.0.courses.id %}">Assessments</a>
-            </li>
-            <li>
                 <a href="{% url 'discussions' posts.0.courses.id %}">Discussion Boards</a>
             </li>
+
+            <li>
+                <a href="{% url 'quiz_index' posts.0.courses.id %}">Assessments</a>
+            </li>
+
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->

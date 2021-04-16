@@ -36,7 +36,10 @@
 				<a href="{% url 'reading_material' quiz_list.0.courses.id %}">Reading Material</a>
 			</li>
 			<li>
-				<a href="{% url 'quiz_index' quiz_list.0.courses.id %}">Assessments</a>
+				<a href="{% url 'discussions' quiz_list.0.courses.id %}">Discussion Boards</a>
+			</li>
+			<li>
+				<a href=" {% url 'quiz_index' quiz_list.0.courses.id %}">Assessments</a>
 			</li>
 
 		</ul>
@@ -52,8 +55,8 @@
 				<tr>
 					<th>Course</th>
 					<th>Quiz Title</th>
-					<th>Category</th>
-					<!-- <th>Single attempt</th> -->
+					<!-- <th>Category</th> -->
+					<th>Single attempt</th>
 					<th></th>
 				</tr>
 			</thead>
