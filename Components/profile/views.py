@@ -16,13 +16,24 @@ def profile_detail(request):
 
     # Get all courses
     courses_list = Courses.objects.all()
+            
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST,instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            
+            return redirect(Profile.get_absolute_url(request.user.profile))
+    else:
+        profile_form = ProfileForm(instance=request.user)
 
-    #request.user.courses.add('f1fc85d1-351e-4bf8-90ab-313367bd1d1c')
+
 
     context = {
         'profile': profile,
         'enrolled_courses': enrolled_courses,
         'courses_list': courses_list,
+        'profile_form': profile_form,
+
     }
 
     return render(request, "profile_detail.html", context)
@@ -38,16 +49,5 @@ def enroll_in_course(request, course_id):
 def unenroll_from_course(request, course_id):
 
     request.user.courses.remove(course_id)
-
-    return redirect(Discussion.get_absolute_url(request.user.profile))
-
-@login_required
-def update_profile(request):
-    profile = request.user.profile
-
-    profile_form = ProfileForm(request.POST or None, instance=profile)
-    
-    if profile_form.is_valid():
-        profile_form.save
 
     return redirect(Profile.get_absolute_url(request.user.profile))
