@@ -58,8 +58,8 @@
                             <hr>
 
                             {% for post in posts %}
-                            <h2><a href="{% url 'quiz_index' post.courses.id post.pk%}">{{ post.title }}</a></h2>
-                            <p>{{ post.description }}</p>
+                            <h2><a href="{% url 'examonline' post.id%}">{{ post.Name }}</a></h2>
+                            <p>{{ post.Description }}</p>
                             {% endfor %}
 
                         </div>

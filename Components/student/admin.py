@@ -1,5 +1,6 @@
 from django.contrib import admin
-from Components.student.models import Post, WelcomePage, Connect, ReadingMaterial, Quiz
+from Components.student.models import Post, WelcomePage, Connect, ReadingMaterial
+# from Components.quizapp.models import Quiz, Question
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'courses')
@@ -65,24 +66,24 @@ class ReadingMaterialAdmin(admin.ModelAdmin):
 
     
 
-class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'courses')
-    list_filter = ['courses']
-    fieldsets = (
-        ("Title", {
-            'fields': ['title', 'description']
-        }),
-        ('Quiz Content', {
-            'fields': [ 'content']
-        }),
-         ('Connect connect page to course', {
-            'fields': ['courses']
-        }),
-    )
+#class QuizAdmin(admin.ModelAdmin):
+  #  list_display = ('title', 'courses')
+   # list_filter = ['courses']
+    #fieldsets = (
+     #   ("Title", {
+      #      'fields': ['title', 'description']
+       # }),
+        #('Quiz Content', {
+         #   'fields': [ 'content']
+        #}),
+         #('Connect connect page to course', {
+          #  'fields': ['courses']
+        #}),
+    #)
     
-
-
-admin.site.register(Quiz, QuizAdmin)
+# admin.site.register(Question)
+# admin.site.register(Quiz)
+#admin.site.register(Quiz, QuizAdmin)
 admin.site.register(ReadingMaterial, ReadingMaterialAdmin)
 admin.site.register(Connect, ConnectPageAdmin )
 admin.site.register(Post, PostAdmin)

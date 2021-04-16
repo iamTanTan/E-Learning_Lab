@@ -46,11 +46,17 @@ INSTALLED_APPS = [
     'Components.home',
     'Components.discussion_board',
     'Components.admin_panel',
+    'Components.profile',
     'ckeditor',
     'ckeditor_uploader',
     'crispy_forms',
     'profanity',
     'vote',
+    #quiz_app
+    'Components.quiz',
+    'Components.multichoice',
+    'Components.true_false',
+    'Components.essay',
 ]
 
 MIDDLEWARE = [
