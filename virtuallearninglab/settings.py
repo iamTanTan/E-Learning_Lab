@@ -44,9 +44,13 @@ INSTALLED_APPS = [
     'Components.courses',
     'tinymce',
     'Components.home',
+    'Components.discussion_board',
     'Components.admin_panel',
     'ckeditor',
     'ckeditor_uploader',
+    'crispy_forms',
+    'profanity',
+    'vote',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +68,7 @@ ROOT_URLCONF = 'virtuallearninglab.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['virtuallearninglab/templates/', 'student/templates', 'zoom/templates', 'courses/templates', os.path.join(BASE_DIR, 'templates')],
+        'DIRS': ['virtuallearninglab/templates/', 'student/templates', 'zoom/templates', 'courses/templates', 'disscussion_board/templates', os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -110,6 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Select Style for Crispy-Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -145,6 +151,7 @@ CKEDITOR_CONFIGS = {
         'width':1500,
     },
 }
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

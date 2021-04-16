@@ -30,13 +30,16 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/admin/courses/courses/add">Create Course</a>
             </li>
-
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin/discussion_board/discussion/add/">Create Discussion</a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/admin/courses/courses/">View Courses</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/admin/auth/user/">View Users</a>
             </li>
+    
 
             {% endif %}
         </ul>
@@ -62,7 +65,8 @@
                         <a href= "/admin/student/post/?courses__id__exact={{ courses.id }}"> Add/Edit Modules</a> |
                         <a href= "/admin/student/connect/?courses__id__exact={{courses.id }}"> Add/Edit Connect</a> |
                         <a href= "/admin/student/readingmaterial/?courses__id__exact={{courses.id }}"> Add/Edit Reading Material</a> | -->
-                        <a class="btn btn-dark" href= "/admin/student/quiz/?courses__id__exact={{ courses.id }}"> Add/Edit Assessments</a> |          
+                        <a class="btn btn-dark" href= "/admin/student/quiz/?courses__id__exact={{ courses.id }}"> Add/Edit Assessments</a> |                                  
+                        
                         {% endfor %}
                     </div>
 
