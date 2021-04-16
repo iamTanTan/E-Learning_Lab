@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from .models import Discussion, Comment, Reply
 from Components.courses.models import Courses
 from .forms import CommentForm, ReplyForm, DiscussionForm
@@ -10,20 +9,10 @@ from django.http import HttpResponse, JsonResponse
 import datetime
 
 #  View for the 'discussions.html' which displays a list of discussions for a given course id
-=======
-from .models import Discussion, Comment, Reply, ReplyManager
-from .forms import CommentForm, ReplyForm, DeleteCommentForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-import datetime
-
-
->>>>>>> QuizApp-Integration
 @login_required
 def discussions(request, id_field):
     discussions = Discussion.objects.all().filter(courses = (str)(id_field))
   
-<<<<<<< HEAD
     # Render not exists if no discussions exist yet
     if (not discussions.exists()):
         return render(request, "not_exists.html", {})
@@ -50,24 +39,13 @@ def discussions(request, id_field):
     context = {
         "discussions": discussions,
         "DiscussionForm": discussion_form,   
-=======
-    if (not discussions.exists()):
-        return render(request, "not_exists.html", {})
-
-    context = {
-        "discussions": discussions,
-     
->>>>>>> QuizApp-Integration
     }
 
     return render(request, "discussions.html", context)
 
 
-<<<<<<< HEAD
 
 # View for the 'discussion_detail.html' displays a particular board (pk) and its comments and replies
-=======
->>>>>>> QuizApp-Integration
 @login_required
 def discussion_detail(request, id_field, pk):
     # Retrieve current discussion and its specific comments
@@ -76,7 +54,6 @@ def discussion_detail(request, id_field, pk):
     if (not discussions.exists()):
         return render(request, "not_exists.html", {})
 
-<<<<<<< HEAD
     discussion = discussions.get(pk=pk)    
 
     # Retrieve all comments associated with the discussion according to user selected order
@@ -101,12 +78,6 @@ def discussion_detail(request, id_field, pk):
         comments = paginator.page(1)
     except EmptyPage:
         comments = paginator.page(paginator.num_pages)
-=======
-    discussion = discussions.get(pk=pk)
-
-    # Retrieve all comments associated with the discussion
-    comments = discussion.comments.all()
->>>>>>> QuizApp-Integration
 
     # New Comment POST Form
     new_comment = None
@@ -124,12 +95,9 @@ def discussion_detail(request, id_field, pk):
             # Set form to default state after submit
             comment_form = CommentForm()
 
-<<<<<<< HEAD
             # Reload after creating comment
             return redirect(Discussion.get_absolute_url(discussion))
 
-=======
->>>>>>> QuizApp-Integration
     else:
         comment_form = CommentForm()
 
@@ -141,7 +109,6 @@ def discussion_detail(request, id_field, pk):
         reply_form = ReplyForm(request.POST)
         if reply_form.is_valid():
 
-<<<<<<< HEAD
             # Get the parent id from the comment that will be replied to            
             parent_id = request.POST.get('parent_id')
             parent_comment = Comment.objects.get(id=parent_id)
@@ -156,26 +123,10 @@ def discussion_detail(request, id_field, pk):
             reply_form = ReplyForm()
 
             return redirect(Discussion.get_absolute_url(discussion))
-=======
-            # Get the parent id from the comment that will be replied to
-            if(comments.exists()):
-                parent_id = request.POST.get('parent_id')
-                parent_comment = Comment.objects.get(id=parent_id)
-                # Create Reply object but don't save to database yet
-                new_reply = reply_form.save(commit=False)
-                # Assign the current user and current comment to new reply
-                new_reply.comment = parent_comment
-                new_reply.created_by = request.user
-                # Save the reply to the database
-                new_reply.save()
-                # Set form to default state after submit
-                reply_form = ReplyForm()
->>>>>>> QuizApp-Integration
 
     else:
         reply_form = ReplyForm()
 
-<<<<<<< HEAD
 
     context = {'discussion': discussion,
                 'comments': comments,
@@ -313,64 +264,3 @@ def upvote_reply(request, pk):
         return JsonResponse(data)
     else:
         return HttpResponse(400, 'Invalid form')
-=======
-    # delete_own_comment or flag as removed if replies exist
-    deleted_comment = None
-
-    if request.method == "POST":
-        delete_comment_form = DeleteCommentForm(request.POST)
-        if delete_comment_form.is_valid():
-            
-            if(comments.exists()):            
-                delete_id = request.POST.get('comment_id')
-                print(delete_id)
-                deleted_comment = Comment.objects.get(id=delete_id)
-                deleted_comment = delete_comment_form.save(commit=False)
-                deleted_comment.id = delete_id
-
-                if not deleted_comment.replies.exists():
-                    deleted_comment.delete()
-                    # Must repopulate comments after deletion
-                    comments = discussion.comments.all()
-                        
-                else:
-                    deleted_comment.is_removed = True
-                    # deleted_comment.created_on = datetime.date.()
-                    deleted_comment.save()
-    
-                delete_comment_form = DeleteCommentForm()
-    else:
-         delete_comment_form = DeleteCommentForm()
-
-
-    return render(request, 'discussion_detail.html', {'discussion': discussion,
-                                           'comments': comments,
-                                           'new_comment': new_comment,
-                                           'comment_form': comment_form,
-                                           'new_reply': new_reply,
-                                           'reply_form': reply_form,
-                                           'delete_comment_form': delete_comment_form,})
-
-
-
-@login_required
-def delete_own_comment(request):
-    if request.method == "POST":
-        delete_comment_form = DeleteCommentForm(request.POST)
-        if delete_comment_form.is_valid():
-            comment_id = request.POST.get(comment_id)
-            print(comment_id)
-            comment = Comment.objects.get(id=comment_id)
-                
-            if comment.created_by == request.user:
-                            
-                if comment.replies.exists():
-                    comment.delete()
-                else:
-                    comment.is_removed = True
-                    comment.save()
-
-                delete_comment_form = DeleteCommentForm()
-           
-    
->>>>>>> QuizApp-Integration
