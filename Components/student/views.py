@@ -13,7 +13,7 @@ def class_index(request, id_field):
     context = {
         "posts": posts,
     }
-    print(context)
+    
     return render(request, "class_index.html", context)
 
 
