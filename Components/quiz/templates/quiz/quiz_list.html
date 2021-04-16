@@ -16,6 +16,9 @@
 			<small>
 				{% if user.is_authenticated %}
 				<li style="color: white;">Welcome, {{ user.get_username }}</li>
+				<li class="mx-auto">
+					<a href="{% url 'profile_detail' %}"><i class="mdi mdi-account-outline"></i> My Profile</a>
+				</li>
 				<li style="padding-left:1rem; padding-bottom: 2em;"><a
 						href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
 				{% else %}
@@ -47,46 +50,71 @@
 	<!-- END Sidebar -->
 
 	<div id="page-content-wrapper">
-		<h2>List of {{ quiz_list.0.courses.name }} Quizzes</h2>
-		{% if quiz_list %}
-		<table class="table table-bordered table-striped">
+		<!-- Discussion Page Header -->
 
-			<thead>
-				<tr>
-					<th>Course</th>
-					<th>Quiz Title</th>
-					<!-- <th>Category</th> -->
-					<th>Single attempt</th>
-					<th></th>
-				</tr>
-			</thead>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="col-md-12 ">
+						<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+						<div class="col-md-8 offset-md-2">
+							<div class="container">
+								<h2>List of {{ quiz_list.0.courses.name }} Quizzes</h2>
+								{% if quiz_list %}
+								<hr>
+								<table class="table table-bordered table-striped">
 
-			<tbody>
+									<thead>
+										<tr>
+											<th>Course</th>
+											<th>Quiz Title</th>
+											<!-- <th>Category</th> -->
+											<th>Single attempt</th>
+											<th>Take Quiz</th>
+										</tr>
+									</thead>
 
-				{% for quiz in quiz_list %}
+									<tbody>
 
-				<tr>
-					<td>{{ quiz.courses.name }}</td>
-					<td>{{ quiz.title }}</td>
-					<!-- <td>{{ quiz.category }}</td> -->
+										{% for quiz in quiz_list %}
 
-					<td>{{ quiz.single_attempt }}</td>
+										<tr>
+											<td>{{ quiz.courses.name }}</td>
+											<td>{{ quiz.title }}</td>
+											<!-- <td>{{ quiz.category }}</td> -->
 
-					<td>
-						<a href="{% url 'quiz_start_page' slug=quiz.url %}">
-							View Quiz Details
-						</a>
-				</tr>
+											<td>{{ quiz.single_attempt }}</td>
 
-				{% endfor %}
-			</tbody>
+											<td>
+												<a class="btn btn-sm btn-primary"
+													href="{% url 'quiz_start_page' slug=quiz.url %}">
+													Take Quiz
+												</a>
+										</tr>
 
-		</table>
+										{% endfor %}
+									</tbody>
 
-		{% else %}
-		<p>{% trans "There are no available quizzes" %}.</p>
-		{% endif %}
-		<a class="btn btn-lg btn-success" href="{% url 'course_progress' quiz_list.0.courses.id %}">View Quiz Scores</a>
+								</table>
+
+								{% else %}
+								<p>{% trans "There are no available quizzes" %}.</p>
+								{% endif %}
+								<a class="btn btn-lg btn-success"
+									href="{% url 'course_progress' quiz_list.0.courses.id %}">View Quiz Scores</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+<!-- Menu Toggle Script -->
+<script>
+	$("#menu-toggle").click(function (e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("toggled");
+	});
+</script>
 {% endblock %}

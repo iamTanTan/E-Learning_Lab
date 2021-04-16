@@ -21,6 +21,9 @@
             <small>
                 {% if user.is_authenticated %}
                 <li style="color: white;">Welcome, {{ user.get_username }}</li>
+                <li class="mx-auto">
+                    <a href="{% url 'profile_detail' %}"><i class="mdi mdi-account-outline"></i> My Profile</a>
+                </li>
                 <li style="padding-left:1rem; padding-bottom: 2em;"><a
                         href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
                 {% else %}
@@ -41,6 +44,9 @@
                 <a href="{% url 'reading_material' course_quizzes.0.courses.id %}">Reading Material</a>
             </li>
             <li>
+                <a href="{% url 'discussions' course_quizzes.0.courses.id %}">Discussion Boards</a>
+            </li>
+            <li>
                 <a href="{% url 'quiz_index' course_quizzes.0.courses.id %}">Assessments</a>
             </li>
 
@@ -54,14 +60,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                        <div class="container-fluid">
+
+                        <div class="col-md-8 offset-md-2">
                             {% if course_quizzes %}
 
                             <hr>
 
                             <h2>{{ course_quizzes.0.courses.name}} Assessment Progress</h2>
                             <p class="lead">
-                                Below are the results of the assessments that you have taken for
+                                Below are the results of assessments that you have taken for
                                 {{ course_quizzes.0.courses.name }}
                             </p>
 
@@ -102,6 +109,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Menu Toggle Script -->
 <script>
