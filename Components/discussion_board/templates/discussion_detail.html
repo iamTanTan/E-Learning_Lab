@@ -49,7 +49,7 @@
     </div>
     <!-- END Sidebar -->
 
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
         <!-- Notification Section on successful creation -->
         {% if new_reply %}
@@ -211,16 +211,31 @@
 
                         <div class="mt-2">
                             <div class="row align-items-sm-center p-1">
+
+                                <!-- Button for a single comment's replies collapse -->
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <button class="btn btn-sm btn-dark" type="button" data-toggle="collapse"
+                                        data-target="#collapseReply{{comment.id}}" aria-expanded="false"
+                                        aria-controls="collapseReply{{comment.id}}">
+                                        View {{comment.replies.count}} Replies
+                                    </button>
+                                </div>
+                                <!-- END Button for a single comment's replies collapse -->
+
                                 <!-- Button trigger for ReplyForm -->
-                                <button class="col-sm-0 btn btn-sm btn-light" type="button" data-toggle="collapse"
-                                    data-target=".collapseReplyForm{{comment.id}}" aria-expanded="false"
-                                    aria-controls="collapseReplyExample">
-                                    <i class="mdi mdi-message-reply-text"></i> Reply
-                                </button>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <button class="btn btn-sm btn-light" type="button" data-toggle="collapse"
+                                        data-target=".collapseReplyForm{{comment.id}}" aria-expanded="false"
+                                        aria-controls="collapseReplyExample">
+                                        <i class="mdi mdi-message-reply-text"></i> New Reply
+                                    </button>
+                                </div>
                                 <!-- END Button trigger for ReplyForm -->
 
+
+
                                 <!-- Upvote Buttons for comments -->
-                                <span class="col">
+                                <div class="offset-3 col-lg-3 col-md-3 col-sm-3">
                                     <div class="btn float-sm-right upvoteComment{{comment.id}}">
                                         {{ comment.votes.count }}
                                     </div>
@@ -231,7 +246,7 @@
                                         <button type="submit" class="btn text-muted btn-link"><i
                                                 class="mdi mdi-thumb-up"></i></button>
                                     </form>
-                                </span>
+                                </div>
                                 <!-- END Upvote Buttons for comments -->
                             </div>
 
@@ -250,7 +265,7 @@
                     </div>
 
                     <!-- Display Replies for each comment -->
-                    <div>
+                    <div class="collapse" id="collapseReply{{comment.id}}">
                         {% for reply in comment.replies.all %}
                         {% if reply.comment.id == comment.id %}
                         <br>
