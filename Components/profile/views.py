@@ -17,6 +17,19 @@ def profile_detail(request):
     # Get all courses
     courses_list = Courses.objects.all()
             
+    context = {
+        'profile': profile,
+        'enrolled_courses': enrolled_courses,
+        'courses_list': courses_list,
+    }
+
+    return render(request, "profile_detail.html", context)
+
+@login_required
+def update_profile(request): 
+
+    profile = Profile.objects.get(user=request.user)
+
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST,instance=request.user.profile)
         if profile_form.is_valid():
@@ -24,19 +37,14 @@ def profile_detail(request):
             
             return redirect(Profile.get_absolute_url(request.user.profile))
     else:
-        profile_form = ProfileForm(instance=request.user)
-
-
+        profile_form = ProfileForm(instance=request.user.profile)
 
     context = {
         'profile': profile,
-        'enrolled_courses': enrolled_courses,
-        'courses_list': courses_list,
         'profile_form': profile_form,
-
     }
 
-    return render(request, "profile_detail.html", context)
+    return render(request, "update_profile.html", context)
     
 @login_required
 def enroll_in_course(request, course_id):
