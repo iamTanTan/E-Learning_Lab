@@ -4,13 +4,13 @@
 <h5 align="center"> (previously Virtual Learning Lab) </h5>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/adriane0523/virtuallearnignlab?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/iamTanTan/E-Learning_Lab?color=56BEB8">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/adriane0523/virtuallearnignlab?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/iamTanTan/E-Learning_Lab?color=56BEB8">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/adriane0523/virtuallearnignlab?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/iamTanTan/E-Learning_Lab?color=56BEB8">
 
-  <img alt="License" src="https://img.shields.io/github/license/adriane0523/virtuallearnignlab?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/iamTanTan/E-Learning_Lab?color=56BEB8">
 
 </p>
 
@@ -56,10 +56,10 @@ Download an IDE, preferably VS code. Load project into the IDE
 
 ```bash
 # Clone this project
-$ git clone https://github.com/iamTanTan/E-Learning_Lab_Spring_2021.git
+$ git clone https://github.com/iamTanTan/E-Learning_Lab.git
 
 # Access
-$ cd E-Learning_Lab_Spring_2021/
+$ cd E-Learning_Lab/
 
 # create a virutal enviroment to install your dependencies,
 $ python -m venv venv
