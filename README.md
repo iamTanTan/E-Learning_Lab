@@ -119,13 +119,13 @@ Django tutorial - https://docs.djangoproject.com/en/3.1/intro/tutorial01/
 Django portfolio - https://realpython.com/get-started-with-django-1/
 
 ## Dependencies ##
-https://pypi.org/project/django-embed-video/
-https://pypi.org/project/django-ckeditor/
-https://pypi.org/project/django-tinymce/
-https://django-crispy-forms.readthedocs.io/en/latest/
-https://django-vote.readthedocs.io/en/latest/
-https://pypi.org/project/django-profanity-check/
-https://github.com/sswapnil2/django-quiz-app
+- https://pypi.org/project/django-embed-video/
+- https://pypi.org/project/django-ckeditor/
+- https://pypi.org/project/django-tinymce/
+- https://django-crispy-forms.readthedocs.io/en/latest/
+- https://django-vote.readthedocs.io/en/latest/
+- https://pypi.org/project/django-profanity-check/
+- https://github.com/sswapnil2/django-quiz-app
   
 ## :memo: License ##
 
