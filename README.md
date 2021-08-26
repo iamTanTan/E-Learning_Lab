@@ -48,9 +48,9 @@ The following tools were used in this project:
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) 
-Download Python 3.7.9 at https://www.python.org/
-Download an IDE, preferably VS code. Load project into the IDE
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com)  
+Download Python 3.7.9 at https://www.python.org/  
+Download an IDE, preferably [VS code](https://code.visualstudio.com/download). Load project into the IDE  
 
 ## :checkered_flag: Starting ##
 
@@ -132,6 +132,11 @@ Django portfolio - https://realpython.com/get-started-with-django-1/
 - https://django-vote.readthedocs.io/en/latest/
 - https://pypi.org/project/django-profanity-check/
 - https://github.com/sswapnil2/django-quiz-app
+  
+## Production Site ##
+https://elearning-lab.org/  
+Hosted on Digital Ocean.  
+For more specifics on the deployment process, view the Google Drive (info will be added soon).
   
 ## :memo: License ##
 
