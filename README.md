@@ -122,7 +122,11 @@ Django portfolio - https://realpython.com/get-started-with-django-1/
 https://pypi.org/project/django-embed-video/
 https://pypi.org/project/django-ckeditor/
 https://pypi.org/project/django-tinymce/
-
+https://django-crispy-forms.readthedocs.io/en/latest/
+https://django-vote.readthedocs.io/en/latest/
+https://pypi.org/project/django-profanity-check/
+https://github.com/sswapnil2/django-quiz-app
+  
 ## :memo: License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
