@@ -91,6 +91,7 @@ https://elearning-lab.org/admin/
 https://elearning-lab.org/admin_panel/
 <website link>/admin_panel => “user” admin panel (created)
 There are two different admin panels, one is meant for a developer to look over and the other one is meant for the organization to use. I personally thought the admin panel for developers is confusing to the normal user so creating another admin panel for the Birdge2Africa organizations was needed. However, the user Admin panel still uses elements of the developer admin panel.
+  
 Student Component
 https://elearning-lab.org/student/welcome/28e4a600-54f3-476b-93d3-8c97d06f7283
 Holds the different course home, modules, connect, reading material, and assessments. Assessments uses google form for quizzes
@@ -102,6 +103,10 @@ Holds the UI for the main page
 Courses Component
 https://elearning-lab.org/courses
 Holds the UI for courses
+  
+Discussion Board Component
+https://github.com/iamTanTan/E-Learning_Lab/tree/main/Components/discussion_board
+  
 
 Virutallearninglab folder
 Main folder, it holds the UI for login and register, base templates for each page, routing, and settings of the project
