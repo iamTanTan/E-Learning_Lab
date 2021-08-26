@@ -4,9 +4,9 @@
 
 {% block page_content %}
 
-<div id="update-profile">
+<div id="update-profile" class="m-auto col-lg-6 align-items-center">
     <div class="card shadow mb-3">
-        <div class="d-flex flex-column align-items-center text-center">
+        <div class="d-flex flex-column text-center">
             <div class="card-title mt-4 mb-0">
                 <h4>Update Profile</h4>
             </div>
@@ -14,11 +14,11 @@
         <hr>
         <div class="card-body">
 
-            <div class="col-sm-12">
+            <div>
                 <form method="post">
                     {% csrf_token %}
                     {{ profile_form|crispy }}
-                    <button class="btn btn-sm btn-light">Submit</button>
+                    <button class="btn btn-block btn-dark">Submit</button>
                 </form>
             </div>
         </div>
