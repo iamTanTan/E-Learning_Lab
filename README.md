@@ -45,6 +45,7 @@ The following tools were used in this project:
 - [Python](https://www.python.org)
 - [Django](https://www.djangoproject.com/)
 - [HTML/CSS]
+- [Bootstrap](https://getbootstrap.com/)
 
 ## :white_check_mark: Requirements ##
 
@@ -115,14 +116,20 @@ Main folder, it holds the UI for login and register, base templates for each pag
 ### asset/static folder=> holds the css files and images (there are two because when website is deployed it looks at static folder)  
 media folder => upload photos (currently not working)
 
-## Related links ##
+## Related links and Helpful Resources ##
 installing pip - https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
 
 login and register - https://levelup.gitconnected.com/how-to-implement-login-logout-and-registration-with-djangos-user-model-59442164db73
 
 Django tutorial - https://docs.djangoproject.com/en/3.1/intro/tutorial01/
+  
+Django 4 hour tutorial - https://www.freecodecamp.org/news/python-django-course/
 
 Django portfolio - https://realpython.com/get-started-with-django-1/
+  
+Bootstrap Cheat Sheet - https://hackerthemes.com/bootstrap-cheatsheet/
+  
+Git Cheat Sheet - https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet
 
 ## Dependencies ##
 - https://pypi.org/project/django-embed-video/
