@@ -84,34 +84,35 @@ python manage.py migrate
 
 ## Whats in the project ##
 
-Admin Panel component
-https://elearning-lab.org/admin/
+### Admin Panel Component  
+https://elearning-lab.org/admin/  
 <website link>/admin => Developer admin panel (this came with Djano)
 
-https://elearning-lab.org/admin_panel/
+https://elearning-lab.org/admin_panel/  
 <website link>/admin_panel => “user” admin panel (created)
 There are two different admin panels, one is meant for a developer to look over and the other one is meant for the organization to use. I personally thought the admin panel for developers is confusing to the normal user so creating another admin panel for the Birdge2Africa organizations was needed. However, the user Admin panel still uses elements of the developer admin panel.
   
-Student Component
-https://elearning-lab.org/student/welcome/28e4a600-54f3-476b-93d3-8c97d06f7283
+### Student Component  
+https://elearning-lab.org/student/welcome/28e4a600-54f3-476b-93d3-8c97d06f7283  
 Holds the different course home, modules, connect, reading material, and assessments. Assessments uses google form for quizzes
 
-Home Component
-https://elearning-lab.org/
+### Home Component  
+https://elearning-lab.org/  
 Holds the UI for the main page
 
-Courses Component
-https://elearning-lab.org/courses
+### Courses Component  
+https://elearning-lab.org/courses  
 Holds the UI for courses
   
-Discussion Board Component
-https://github.com/iamTanTan/E-Learning_Lab/tree/main/Components/discussion_board
-  
+### Discussion Board Component  
+https://github.com/iamTanTan/E-Learning_Lab/tree/main/Components/discussion_board  
+Contains the models, routes, views, and forms for the discussion board component. A course can contain many discussion boards associated with it. Upvotes/downvotes and profanity checker in place at this time. 
 
-Virutallearninglab folder
+### Virutallearninglab folder  
+https://github.com/iamTanTan/E-Learning_Lab/tree/main/virtuallearninglab  
 Main folder, it holds the UI for login and register, base templates for each page, routing, and settings of the project
 
-asset/static folder=> holds the css files and images (there are two because when website is deployed it looks at static folder)
+### asset/static folder=> holds the css files and images (there are two because when website is deployed it looks at static folder)  
 media folder => upload photos (currently not working)
 
 ## Related links ##
