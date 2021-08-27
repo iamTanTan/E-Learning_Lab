@@ -113,8 +113,11 @@ Contains the models, routes, views, and forms for the discussion board component
 https://github.com/iamTanTan/E-Learning_Lab/tree/main/virtuallearninglab  
 Main folder, it holds the UI for login and register, base templates for each page, routing, and settings of the project
 
-### asset/static folder=> holds the css files and images (there are two because when website is deployed it looks at static folder)  
-media folder => upload photos (currently not working)
+### asset/static folder  
+holds the css files and images (there are two because when website is deployed it looks at static folder)  
+
+### media folder 
+upload photos (currently not working)
 
 ## Related links and Helpful Resources ##
 installing pip - https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
