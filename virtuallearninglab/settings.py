@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Components.discussion_board',
     'Components.admin_panel',
     'Components.profile',
+    'Components.fragments',
     'ckeditor',
     'ckeditor_uploader',
     'crispy_forms',
