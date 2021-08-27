@@ -28,7 +28,7 @@ with open('secret_key.txt') as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['207.154.236.200', 'wwww.elearning-lab.org', 'elearning-lab.org','virtual-learning-lab.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['207.154.236.200', 'wwww.elearning-lab.org', 'elearning-lab.org','virtual-learning-lab.herokuapp.com', '127.0.0.1', 'https://e-learning-lab-staged.herokuapp.com/']
 
 # Application definition
 
