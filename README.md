@@ -1,4 +1,6 @@
 ﻿<h1 align="center">E-Learning Lab</h1>
+ <h2 align="center">WARNING!!! THIS REPOSITORY IS NO LONGER IN USE!</h2>
+<h2 align="center">WORKING DEVELOPMENT IS NOW LOCATED AT https://github.com/adriane0523/VirtualLearningLab</h2>
 <h5 align="center"> (previously Virtual Learning Lab) </h5>
 
 <p align="center">
